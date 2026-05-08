@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6Z5DZW6DD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-P6Z5DZW6DD', {
+        'anonymize_ip': true
+      });
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium finance education products. Real strategies for real financial freedom.">
+    <title>FinanceIntelHub — Premium Finance Education</title>
+
+    <!--
+    ============================================================
+    COVERS FOLDER
+    ------------------------------------------------------------
+    Place your product cover images in a folder called "covers/"
+    next to this file. Example:
+        covers/debt-free.jpg
+        covers/zero-income.jpg
+
+    Recommended size: 800×600px or 4:3 ratio, JPG or WebP.
+    If a cover image is missing the card shows a styled placeholder.
+
+    ADDING NEW PRODUCTS
+    ------------------------------------------------------------
+    Edit products.json — add a new object to the array:
+    {
+      "title":       "Your Product Title",
+      "description": "Short description under ~200 characters.",
+      "price":       "$27",
+      "cover":       "covers/your-cover.jpg",
+      "gumroad":     "https://yourstore.gumroad.com/l/your-product",
+      "badge":       "New"      <- optional, leave out or use ""
+    }
+    Save the file. Refresh the page. Done.
+
+    LOCAL FILE vs NETLIFY
+    ------------------------------------------------------------
+    Hosted on Netlify (or any web server): fetch() reads
+    products.json automatically every page load.
+
+    Opening index.html directly from your desktop (file://):
+    fetch() is blocked by the browser. The site still works —
+    it falls back to the inline snapshot below (FALLBACK_PRODUCTS).
+    To test locally with live JSON loading, run:
+        python3 -m http.server 8000
+    then visit http://localhost:8000
+    ============================================================
+    -->
+
+    <!-- Google Fonts: async load to avoid render-blocking -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap">
+    </noscript>
+
+    <!-- GSAP — defer prevents render-blocking; inline script uses type="module" to run after -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" defer crossorigin="anonymous"></script>
+
+    <style>
+        /* ── Reset ─────────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* ── Design tokens ─────────────────────────────────────── */
+        :root {
+            --bg:           #0a0a0f;
+            --bg-card:      #0f0f1a;
+            --bg-card-h:    #141428;
+            --gold:         #FFD700;
+            --gold-light:   #ffe84d;
+            --gold-dim:     rgba(255,215,0,.22);
+            --gold-glow:    rgba(255,215,0,.08);
+            --gold-shadow:  rgba(255,215,0,.35);
+            --white:        #ffffff;
+            --light:        #d4d4e8;
+            --muted:        #7a7a99;
+            --border:       rgba(255,215,0,.1);
+            --border-h:     rgba(255,215,0,.45);
+            --radius:       10px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* ── Scrollbar ──────────────────────────────────────────── */
+        ::-webkit-scrollbar            { width: 5px; }
+        ::-webkit-scrollbar-track      { background: var(--bg); }
+        ::-webkit-scrollbar-thumb      { background: var(--gold-dim); border-radius: 3px; }
+
+        /* ── Utility ────────────────────────────────────────────── */
+        .bebas { font-family: 'Bebas Neue', cursive; letter-spacing: .03em; }
+
+        /* ═══════════════════════════════════════════════════════════
+           NAV
+        ═══════════════════════════════════════════════════════════ */
+        #nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            padding: 1.4rem 4rem;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background .4s, backdrop-filter .4s, border-bottom .4s;
+        }
+        #nav.scrolled {
+            background: rgba(10,10,15,.88);
+            backdrop-filter: blur(22px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.55rem; letter-spacing: .06em;
+            color: var(--gold); text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+        .nav-links a {
+            color: var(--light); text-decoration: none;
+            font-size: .82rem; font-weight: 500;
+            letter-spacing: .1em; text-transform: uppercase;
+            transition: color .2s;
+        }
+        .nav-links a:hover { color: var(--gold); }
+
+        @media (max-width: 768px) {
+            #nav { padding: 1.1rem 1.4rem; }
+            .nav-links { display: none; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           HERO
+        ═══════════════════════════════════════════════════════════ */
+        #hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center;
+            padding: 9rem 2rem 5rem;
+            position: relative;
+            background:
+                radial-gradient(ellipse at 50% -5%, rgba(255,215,0,.13) 0%, transparent 55%),
+                var(--bg);
+            overflow: hidden;
+        }
+        /* dot-grid texture */
+        #hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,.028) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+        }
+        /* bottom fade */
+        #hero::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 180px;
+            background: linear-gradient(transparent, var(--bg));
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            font-size: .75rem; letter-spacing: .28em; text-transform: uppercase;
+            color: var(--gold); font-weight: 600; margin-bottom: 1.4rem;
+            opacity: 0; /* GSAP animates in */
+        }
+        .hero-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(4.5rem, 11vw, 10rem);
+            line-height: .92; letter-spacing: .015em;
+            color: var(--white); max-width: 950px;
+            margin-bottom: 1.6rem;
+            opacity: 0;
+            text-shadow:
+                1px 1px 0 rgba(255,215,0,.9),
+                2px 2px 0 rgba(220,185,0,.75),
+                3px 3px 0 rgba(185,155,0,.6),
+                4px 4px 0 rgba(150,125,0,.5),
+                5px 5px 0 rgba(110,90,0,.4),
+                6px 6px 0 rgba(75,60,0,.3),
+                7px 7px 0 rgba(45,35,0,.2),
+                8px 8px 16px rgba(0,0,0,.7);
+        }
+        .hero-title .gold { color: var(--gold); }
+        .hero-tagline {
+            font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+            color: var(--light); max-width: 580px;
+            line-height: 1.7; margin-bottom: .9rem;
+            opacity: 0;
+        }
+        .hero-sub {
+            font-size: clamp(.88rem, 1.4vw, 1rem);
+            color: var(--muted); max-width: 480px;
+            line-height: 1.75; margin-bottom: 3rem;
+            opacity: 0;
+        }
+        .hero-cta {
+            display: flex; gap: 1rem;
+            flex-wrap: wrap; justify-content: center;
+            margin-bottom: 5rem;
+            opacity: 0;
+        }
+        .btn-primary {
+            display: inline-block;
+            background: var(--gold); color: #0a0a0f;
+            padding: .88rem 2.6rem; border-radius: 5px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem; font-weight: 700;
+            letter-spacing: .08em; text-transform: uppercase;
+            text-decoration: none; position: relative; overflow: hidden;
+            transition: transform .25s, box-shadow .25s;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute; top: 0; left: -120%;
+            width: 80%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+            transform: skewX(-20deg);
+            transition: left .55s;
+        }
+        .btn-primary:hover::after { left: 150%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px var(--gold-shadow); }
+
+        .btn-ghost {
+            display: inline-block;
+            background: transparent; color: var(--gold);
+            padding: .88rem 2.6rem; border-radius: 5px;
+            border: 1px solid var(--gold-dim);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .88rem; font-weight: 600;
+            letter-spacing: .08em; text-transform: uppercase;
+            text-decoration: none;
+            transition: background .2s, border-color .2s, transform .25s;
+        }
+        .btn-ghost:hover {
+            background: var(--gold-glow);
+            border-color: rgba(255,215,0,.55);
+            transform: translateY(-2px);
+        }
+
+        .scroll-arrow {
+            display: flex; flex-direction: column;
+            align-items: center; gap: .5rem;
+            opacity: 0; /* GSAP reveals */
+            animation: bounce 2.2s ease-in-out infinite;
+        }
+        .scroll-arrow span {
+            font-size: .68rem; letter-spacing: .22em;
+            text-transform: uppercase; color: var(--muted);
+        }
+        .scroll-arrow svg { width: 22px; height: 22px; color: var(--gold); }
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50%      { transform: translateY(9px); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           TRUST BAR
+        ═══════════════════════════════════════════════════════════ */
+        #trust {
+            background: linear-gradient(135deg,#0d0d18,#111120);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: .9rem 0; overflow: hidden;
+        }
+        .marquee-wrap {
+            display: flex; overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+        }
+        .marquee-track {
+            display: flex; align-items: center;
+            white-space: nowrap;
+            animation: marquee 30s linear infinite;
+            flex-shrink: 0;
+        }
+        .trust-item {
+            display: inline-flex; align-items: center;
+            gap: 1.4rem; padding: 0 1.6rem;
+            font-size: .8rem; font-weight: 700;
+            letter-spacing: .1em; text-transform: uppercase;
+            color: var(--gold);
+        }
+        .trust-star {
+            color: var(--gold); opacity: .55; font-size: .75rem;
+        }
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           SHARED SECTION STYLES
+        ═══════════════════════════════════════════════════════════ */
+        .section-pad { padding: 7rem 4rem; }
+        .container    { max-width: 1280px; margin: 0 auto; }
+        .section-label {
+            font-size: .72rem; letter-spacing: .28em; text-transform: uppercase;
+            color: var(--gold); font-weight: 600; margin-bottom: .9rem;
+        }
+        .section-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+            line-height: .97; letter-spacing: .02em;
+            margin-bottom: .8rem;
+        }
+        .section-sub {
+            color: var(--muted); font-size: 1rem;
+            max-width: 480px; line-height: 1.75;
+        }
+
+        @media (max-width: 768px) { .section-pad { padding: 4.5rem 1.4rem; } }
+
+        /* ═══════════════════════════════════════════════════════════
+           PRODUCTS
+        ═══════════════════════════════════════════════════════════ */
+        #products { padding: 7rem 0; }
+        .products-head {
+            text-align: center;
+            padding: 0 4rem 3.5rem;
+        }
+        .products-head .section-sub { margin: 0 auto; }
+
+        #products-grid {
+            padding: 0 4rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+        }
+
+        @media (max-width: 1100px) { #products-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 640px)  {
+            #products-grid { grid-template-columns: 1fr; padding: 0 1.4rem; }
+            .products-head { padding: 0 1.4rem 2.5rem; }
+        }
+
+        .product-card {
+            background: #1a1a2e;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex; flex-direction: column;
+            transition: transform .38s cubic-bezier(.22,.68,0,1.2), box-shadow .38s, border-color .3s;
+        }
+        .product-card:hover {
+            transform: translateY(-9px);
+            border-color: #FFD700;
+            box-shadow:
+                0 22px 60px rgba(255,215,0,.18),
+                0 0 0 1px rgba(255,215,0,.12);
+        }
+
+        /* Cover image area */
+        .card-cover {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            background: #12122a;
+        }
+        .card-cover img {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+            transition: transform .5s;
+        }
+        .product-card:hover .card-cover img { transform: scale(1.06); }
+
+        .cover-placeholder {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 1rem; padding: 1.5rem;
+            background: #1a1a2e;
+        }
+        .cover-placeholder svg {
+            width: 44px; height: 44px;
+            color: rgba(255,215,0,.28);
+        }
+        .cover-placeholder span {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.15rem; letter-spacing: .06em;
+            color: rgba(255,215,0,.22);
+            text-align: center;
+        }
+
+        .card-badge {
+            position: absolute; top: 1rem; left: 1rem; z-index: 1;
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: .12em; text-transform: uppercase;
+            padding: .28rem .7rem; border-radius: 3px;
+        }
+        .badge-gold  { background: var(--gold);  color: #0a0a0f; }
+        .badge-green { background: #00c896;       color: #0a0a0f; }
+
+        .card-body {
+            padding: 1.7rem;
+            display: flex; flex-direction: column; flex: 1;
+        }
+        .card-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.55rem; letter-spacing: .03em;
+            color: var(--white); margin-bottom: .65rem;
+            line-height: 1.1;
+        }
+        .card-desc {
+            font-size: .88rem; color: var(--muted);
+            line-height: 1.68; flex: 1; margin-bottom: 1.5rem;
+        }
+        .card-foot {
+            display: flex; align-items: center;
+            justify-content: space-between; gap: .75rem;
+            flex-wrap: wrap;
+        }
+        .card-price {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.1rem; color: var(--gold);
+            letter-spacing: .02em;
+        }
+        .btn-card {
+            display: inline-block;
+            background: transparent; color: var(--gold);
+            border: 1px solid var(--gold-dim);
+            padding: .58rem 1.15rem; border-radius: 5px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .78rem; font-weight: 600;
+            letter-spacing: .07em; text-transform: uppercase;
+            text-decoration: none;
+            transition: background .22s, border-color .22s, color .22s, box-shadow .22s;
+            white-space: nowrap; position: relative; overflow: hidden;
+        }
+        .btn-card::after {
+            content: '';
+            position: absolute; top: 0; left: -120%;
+            width: 80%; height: 100%;
+            background: linear-gradient(90deg,transparent,rgba(255,215,0,.12),transparent);
+            transform: skewX(-20deg); transition: left .45s;
+        }
+        .btn-card:hover::after { left: 150%; }
+        .btn-card:hover {
+            background: var(--gold); color: #0a0a0f;
+            border-color: var(--gold);
+            box-shadow: 0 5px 22px rgba(255,215,0,.32);
+        }
+
+        /* Loading state */
+        .loading-wrap {
+            grid-column: 1 / -1; text-align: center; padding: 4rem;
+            color: var(--muted);
+        }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 2px solid var(--border);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin .75s linear infinite;
+            margin: 0 auto 1.2rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ═══════════════════════════════════════════════════════════
+           ABOUT
+        ═══════════════════════════════════════════════════════════ */
+        #about {
+            background: linear-gradient(180deg, var(--bg) 0%, #0d0d1e 50%, var(--bg) 100%);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        @media (max-width: 900px)  { .about-grid { grid-template-columns: 1fr; } }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 2.4rem 2rem;
+            transition: border-color .3s, transform .3s;
+        }
+        .feature-card:hover {
+            border-color: var(--gold-dim);
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            width: 50px; height: 50px;
+            background: var(--gold-glow);
+            border: 1px solid var(--gold-dim);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.35rem; margin-bottom: 1.5rem;
+        }
+        .feature-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.55rem; letter-spacing: .03em;
+            color: var(--white); margin-bottom: .7rem;
+        }
+        .feature-desc { font-size: .88rem; color: var(--muted); line-height: 1.72; }
+
+        /* ═══════════════════════════════════════════════════════════
+           NEWSLETTER
+        ═══════════════════════════════════════════════════════════ */
+        #newsletter { padding: 7rem 4rem; }
+        @media (max-width: 768px) { #newsletter { padding: 4.5rem 1.4rem; } }
+
+        .newsletter-box {
+            max-width: 580px; margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 3.8rem 3rem;
+            text-align: center;
+        }
+        @media (max-width: 640px) { .newsletter-box { padding: 2.5rem 1.4rem; } }
+
+        .nl-icon {
+            width: 54px; height: 54px;
+            background: var(--gold-glow);
+            border: 1px solid var(--gold-dim);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.45rem;
+            margin: 0 auto 1.5rem;
+        }
+        .nl-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(1.9rem, 4vw, 2.8rem);
+            letter-spacing: .02em; line-height: 1.05;
+            margin-bottom: .75rem;
+        }
+        .nl-sub {
+            font-size: .92rem; color: var(--muted);
+            line-height: 1.72; margin-bottom: 2rem;
+        }
+        .nl-form {
+            display: flex; gap: .7rem; flex-wrap: wrap;
+        }
+        .nl-input {
+            flex: 1; min-width: 190px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: .82rem 1.1rem;
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif; font-size: .88rem;
+            outline: none; transition: border-color .2s;
+        }
+        .nl-input::placeholder { color: var(--muted); }
+        .nl-input:focus { border-color: var(--gold-dim); }
+        .nl-btn {
+            background: var(--gold); color: #0a0a0f;
+            border: none; cursor: pointer;
+            padding: .82rem 1.6rem; border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .85rem; font-weight: 700;
+            letter-spacing: .07em; text-transform: uppercase;
+            white-space: nowrap; position: relative; overflow: hidden;
+            transition: transform .22s, box-shadow .22s;
+        }
+        .nl-btn::after {
+            content: '';
+            position: absolute; top: 0; left: -120%;
+            width: 80%; height: 100%;
+            background: linear-gradient(90deg,transparent,rgba(255,255,255,.38),transparent);
+            transform: skewX(-20deg); transition: left .55s;
+        }
+        .nl-btn:hover::after { left: 150%; }
+        .nl-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--gold-shadow); }
+
+        .nl-success {
+            display: none; margin-top: 1.2rem;
+            color: var(--gold); font-size: .88rem; font-weight: 500;
+        }
+        .nl-success.show { display: block; }
+
+        /* ═══════════════════════════════════════════════════════════
+           FOOTER
+        ═══════════════════════════════════════════════════════════ */
+        #footer {
+            border-top: 1px solid var(--border);
+            padding: 4.5rem 4rem;
+            max-width: 1280px; margin: 0 auto;
+        }
+        @media (max-width: 768px) { #footer { padding: 3rem 1.4rem; } }
+
+        .footer-top {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; flex-wrap: wrap;
+            gap: 2.5rem; margin-bottom: 3rem;
+        }
+        .footer-logo-text {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.1rem; color: var(--gold);
+            letter-spacing: .05em; display: block;
+            margin-bottom: .65rem;
+        }
+        .footer-blurb {
+            color: var(--muted); font-size: .83rem;
+            max-width: 230px; line-height: 1.65;
+        }
+        .footer-nav h3 {
+            font-size: .7rem; letter-spacing: .18em;
+            text-transform: uppercase; color: var(--muted);
+            margin-bottom: .9rem; font-weight: 600;
+        }
+        .footer-nav { display: flex; flex-direction: column; gap: 0; }
+        .footer-nav a {
+            color: var(--light); text-decoration: none;
+            font-size: .88rem; padding: .3rem 0;
+            transition: color .2s;
+        }
+        .footer-nav a:hover { color: var(--gold); }
+        .footer-bottom {
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 1rem;
+            padding-top: 2rem; border-top: 1px solid var(--border);
+        }
+        .footer-copy { color: var(--muted); font-size: .78rem; }
+        .footer-email a {
+            color: var(--gold); text-decoration: none;
+            font-size: .82rem; font-weight: 500;
+            transition: opacity .2s;
+        }
+        .footer-email a:hover { opacity: .75; }
+
+        /* ── Mobile hero title ──────────────────────────────────────── */
+        .mobile-br { display: none; }
+        @media (max-width: 767px) {
+            .mobile-br { display: block; }
+            .hero-title { font-size: clamp(3rem, 14vw, 4.5rem); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           SOCIAL PROOF BAR
+        ═══════════════════════════════════════════════════════════ */
+        #social-proof {
+            background: #0d0d1a;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 1.4rem 2rem;
+            text-align: center;
+        }
+        .sp-text {
+            font-size: .9rem;
+            color: var(--light);
+            font-weight: 500;
+            margin-bottom: .35rem;
+        }
+        .sp-stars {
+            color: var(--gold);
+            font-size: 1.15rem;
+            letter-spacing: .15em;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           STORY SECTION
+        ═══════════════════════════════════════════════════════════ */
+        #story { padding: 5rem 4rem; }
+        @media (max-width: 768px) { #story { padding: 4rem 1.4rem; } }
+
+        .story-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 14px 14px 0;
+            padding: 3rem 3rem 3rem 2.8rem;
+        }
+        @media (max-width: 640px) { .story-card { padding: 2rem 1.6rem 2rem 1.5rem; } }
+
+        .story-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(1.9rem, 4vw, 2.8rem);
+            letter-spacing: .02em;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+        .story-body {
+            font-size: 1rem;
+            color: var(--light);
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        /* ── Guarantee badge ────────────────────────────────────────── */
+        .card-guarantee {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            margin-top: 1rem;
+            padding-top: .9rem;
+            border-top: 1px solid var(--border);
+        }
+        .guarantee-icon { color: var(--gold); font-size: 1rem; flex-shrink: 0; }
+        .guarantee-text { font-size: .75rem; color: var(--gold); font-weight: 500; }
+
+        /* ── Urgency line ───────────────────────────────────────────── */
+        .card-urgency {
+            font-size: .72rem;
+            color: rgba(255,215,0,.65);
+            margin-top: .3rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           TESTIMONIALS
+        ═══════════════════════════════════════════════════════════ */
+        #testimonials { padding: 5rem 4rem; }
+        @media (max-width: 768px) { #testimonials { padding: 4rem 1.4rem; } }
+
+        .testimonials-head { text-align: center; margin-bottom: 3rem; }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        @media (max-width: 900px) { .testimonials-grid { grid-template-columns: 1fr; } }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 14px 14px 0;
+            padding: 2rem 2rem 2rem 1.8rem;
+        }
+        .testimonial-quote {
+            font-size: .92rem;
+            color: var(--light);
+            line-height: 1.78;
+            font-style: italic;
+            margin-bottom: 1.2rem;
+        }
+        .testimonial-author {
+            font-size: .78rem;
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: .04em;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           BLOG
+        ═══════════════════════════════════════════════════════════ */
+        #blog { padding: 7rem 0; }
+        .blog-head {
+            text-align: center;
+            padding: 0 4rem 3rem;
+        }
+        .blog-head .section-sub { margin: 0 auto; }
+
+        .blog-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem;
+            justify-content: center;
+            padding: 0 4rem 3rem;
+        }
+        .blog-filter-btn {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold-dim);
+            padding: .45rem 1.15rem;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .blog-filter-btn:hover {
+            background: var(--gold-glow);
+            border-color: var(--gold);
+        }
+        .blog-filter-btn.active {
+            background: var(--gold);
+            color: #0a0a0f;
+            border: 1px solid transparent;
+        }
+        .blog-load-more-btn {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold-dim);
+            padding: .75rem 2.2rem;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .85rem;
+            font-weight: 600;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
+        }
+        .blog-load-more-btn:hover {
+            background: var(--gold-glow);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--gold-shadow);
+        }
+
+        #blog-grid {
+            padding: 0 4rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+        }
+        @media (max-width: 1100px) { #blog-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 640px) {
+            #blog-grid { grid-template-columns: 1fr; padding: 0 1.4rem; }
+            .blog-head { padding: 0 1.4rem 2rem; }
+            .blog-filters { padding: 0 1.4rem 2rem; }
+        }
+
+        .blog-card {
+            background: #1a1a26;
+            border: 1px solid transparent;
+            border-top: 3px solid transparent;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: transform .35s cubic-bezier(.22,.68,0,1.2),
+                        box-shadow .35s, border-color .3s, border-top-color .3s;
+        }
+        .blog-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,215,0,.18);
+            border-top-color: var(--gold);
+            box-shadow: 0 18px 50px rgba(255,215,0,.12);
+        }
+
+        .blog-card-img-wrap {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #12122a 0%, #0a0a14 60%, #1a1408 100%);
+            position: relative;
+        }
+        .blog-card-img-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+            transition: transform .45s ease;
+        }
+        .blog-card:hover .blog-card-img-wrap img { transform: scale(1.06); }
+
+        .blog-card-img-placeholder {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #12122a 0%, #0a0a14 60%, #1a1408 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .blog-card-img-placeholder svg {
+            width: 38px; height: 38px;
+            color: rgba(255,215,0,.18);
+        }
+
+        .blog-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1.3rem 1.4rem .9rem;
+        }
+        .blog-cat-badge {
+            font-size: .62rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            background: var(--gold-dim);
+            color: var(--gold);
+            padding: .25rem .65rem;
+            border-radius: 3px;
+        }
+        .blog-read-time {
+            font-size: .68rem;
+            color: var(--muted);
+            font-weight: 500;
+            letter-spacing: .06em;
+        }
+
+        .blog-card-body {
+            padding: 0 1.4rem 1rem;
+            flex: 1;
+        }
+        .blog-card-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.4rem;
+            letter-spacing: .03em;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: .6rem;
+        }
+        .blog-card-summary {
+            font-size: .84rem;
+            color: var(--muted);
+            line-height: 1.68;
+        }
+
+        .blog-card-foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: .9rem 1.4rem 1.3rem;
+            border-top: 1px solid var(--border);
+            margin-top: .8rem;
+        }
+        .blog-card-date { font-size: .72rem; color: var(--muted); font-weight: 500; }
+        .blog-read-more {
+            font-size: .78rem;
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: .04em;
+        }
+
+        /* ── Blog Modal ──────────────────────────────────────── */
+        .blog-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(5,5,10,.93);
+            backdrop-filter: blur(20px);
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transition: opacity .3s;
+        }
+        .blog-modal-overlay.open    { display: block; }
+        .blog-modal-overlay.visible { opacity: 1; }
+
+        .blog-modal-inner {
+            max-width: 780px;
+            margin: 3rem auto;
+            background: #13131f;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 3.5rem 3.5rem 3rem;
+            position: relative;
+        }
+        @media (max-width: 768px) {
+            .blog-modal-inner { margin: 1rem; padding: 2rem 1.4rem; }
+        }
+
+        .blog-modal-close {
+            position: absolute;
+            top: 1.4rem; right: 1.6rem;
+            background: rgba(255,215,0,.08);
+            border: 1px solid var(--border);
+            color: var(--gold);
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background .2s, transform .2s;
+        }
+        .blog-modal-close:hover { background: rgba(255,215,0,.2); transform: scale(1.1); }
+
+        .blog-modal-meta {
+            display: flex; gap: .9rem; align-items: center;
+            flex-wrap: wrap; margin-bottom: 1.2rem;
+        }
+        .blog-modal-cat {
+            font-size: .62rem; font-weight: 700;
+            letter-spacing: .12em; text-transform: uppercase;
+            background: var(--gold-dim); color: var(--gold);
+            padding: .25rem .65rem; border-radius: 3px;
+        }
+        .blog-modal-date, .blog-modal-readtime { font-size: .75rem; color: var(--muted); }
+
+        .blog-modal-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            letter-spacing: .02em;
+            color: var(--white);
+            line-height: 1.05;
+            margin-bottom: 1.6rem;
+        }
+
+        .blog-modal-body {
+            font-size: .97rem;
+            color: var(--light);
+            line-height: 1.85;
+            border-top: 1px solid var(--border);
+            padding-top: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+        .blog-modal-body p { margin-bottom: 1.2rem; }
+        .blog-modal-body h2 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.8rem; color: var(--gold);
+            letter-spacing: .03em; margin: 1.6rem 0 .7rem;
+        }
+        .blog-modal-body h3 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.4rem; color: var(--gold);
+            letter-spacing: .03em; margin: 1.4rem 0 .6rem;
+        }
+
+        .blog-modal-related {
+            border-top: 1px solid var(--border);
+            padding-top: 2rem; margin-bottom: 2rem;
+        }
+        .blog-modal-related-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.35rem; letter-spacing: .03em;
+            color: var(--gold); margin-bottom: 1.1rem;
+        }
+        .blog-related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        .blog-related-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.1rem;
+            text-decoration: none;
+            display: block;
+            transition: border-color .2s, transform .2s;
+        }
+        .blog-related-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
+        .blog-related-name {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1rem; letter-spacing: .03em;
+            color: var(--white); margin-bottom: .3rem;
+        }
+        .blog-related-price { font-size: .8rem; color: var(--gold); font-weight: 600; }
+
+        .blog-modal-share {
+            border-top: 1px solid var(--border);
+            padding-top: 1.6rem;
+        }
+        .blog-share-label {
+            font-size: .72rem; letter-spacing: .12em;
+            text-transform: uppercase; color: var(--muted); font-weight: 600;
+        }
+        .blog-share-btn {
+            display: inline-flex; align-items: center;
+            padding: .42rem .9rem;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--light);
+            font-size: .77rem; font-weight: 500;
+            cursor: pointer; text-decoration: none;
+            transition: border-color .2s, color .2s, background .2s;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .blog-share-btn:hover {
+            border-color: var(--gold-dim);
+            color: var(--gold);
+            background: var(--gold-glow);
+        }
+
+        /* ── Footer social icons ────────────────────────────────────── */
+        .footer-social {
+            display: flex;
+            gap: .75rem;
+            align-items: center;
+            justify-content: center;
+            padding: 1.2rem 0 .8rem;
+        }
+        .footer-social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #0f0f1a;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            text-decoration: none;
+            flex-shrink: 0;
+            transition: background .2s, color .2s;
+        }
+        .footer-social-link:hover {
+            background: var(--gold);
+            color: #0a0a0f;
+        }
+        .footer-social-link svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            display: block;
+        }
+
+        /* ── Modal share buttons (redesigned) ───────────────────────── */
+        .blog-share-title {
+            font-size: .72rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 600;
+            margin-bottom: .9rem;
+        }
+        .blog-share-buttons {
+            display: flex;
+            gap: .6rem;
+            flex-wrap: wrap;
+        }
+        .blog-share-btn-styled {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .58rem 1.1rem;
+            border-radius: 8px;
+            border: none;
+            color: #fff;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: .03em;
+            transition: opacity .2s, transform .2s;
+            white-space: nowrap;
+        }
+        .blog-share-btn-styled:hover { opacity: .85; transform: translateY(-1px); }
+        .blog-share-btn-styled svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+        .blog-share-btn-copy { color: #0a0a0f !important; }
+        @media (max-width: 480px) {
+            .blog-share-buttons { flex-direction: column; }
+            .blog-share-btn-styled { justify-content: center; }
+        }
+
+        /* ── Cookie Consent Banner ──────────────────────────────── */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 9999;
+            background: rgba(10,10,15,.97);
+            border-top: 1px solid var(--border);
+            padding: .85rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            backdrop-filter: blur(12px);
+            transform: translateY(100%);
+            transition: transform .4s cubic-bezier(.22,.68,0,1.1);
+        }
+        #cookie-banner.visible { transform: translateY(0); }
+        .cookie-text {
+            font-size: .82rem;
+            color: var(--light);
+            line-height: 1.55;
+            flex: 1;
+            min-width: 200px;
+        }
+        .cookie-text a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
+        .cookie-actions {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            flex-shrink: 0;
+        }
+        .cookie-accept {
+            background: var(--gold);
+            color: #0a0a0f;
+            border: none;
+            padding: .5rem 1.35rem;
+            border-radius: 5px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .cookie-accept:hover { transform: translateY(-1px); box-shadow: 0 4px 14px var(--gold-shadow); }
+        .cookie-learn {
+            color: var(--muted);
+            font-size: .8rem;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            transition: color .2s;
+            white-space: nowrap;
+        }
+        .cookie-learn:hover { color: var(--gold); }
+        @media (max-width: 600px) {
+            #cookie-banner { padding: .85rem 1.4rem; }
+            .cookie-actions { width: 100%; }
+        }
+
+        /* ── Three.js particle canvas ─────────────────────────────── */
+        #hero-canvas {
+            position: absolute; inset: 0; z-index: 0;
+            pointer-events: none;
+        }
+        #hero > *:not(#hero-canvas) { position: relative; z-index: 10; }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ NAV ═══════════════════════════════════ -->
+<nav id="nav">
+    <a href="#hero" class="nav-logo">FinanceIntelHub</a>
+    <ul class="nav-links">
+        <li><a href="#products">Products</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#blog">Blog</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<main>
+<!-- ═══════════════════════════════════ HERO ══════════════════════════════════ -->
+<section id="hero">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <p class="hero-eyebrow">Premium Finance Education</p>
+    <h1 class="hero-title">Finance<br class="mobile-br"><span class="gold">Intel</span>Hub</h1>
+    <p class="hero-tagline">Real strategies. Real results. Financial freedom starts here.</p>
+    <p class="hero-sub">Premium finance education built for people who are done being broke.</p>
+    <div class="hero-cta">
+        <a href="#products" class="btn-primary">Browse The Collection</a>
+        <a href="#about"    class="btn-ghost">Learn More</a>
+    </div>
+    <div class="scroll-arrow" id="scroll-arrow">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <polyline points="19 12 12 19 5 12"/>
+        </svg>
+    </div>
+</section>
+
+<!-- ══════════════════════════════ SOCIAL PROOF BAR ══════════════════════════ -->
+<div id="social-proof">
+    <p class="sp-text">Join 100+ readers already on their journey to financial freedom</p>
+    <div class="sp-stars">★★★★★</div>
+</div>
+
+<!-- ═══════════════════════════════════ TRUST BAR ════════════════════════════ -->
+<div id="trust">
+    <div class="marquee-wrap">
+        <div class="marquee-track" id="marquee-track">
+            <!-- Populated by JS for seamless infinite loop -->
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════ STORY ════════════════════════════════ -->
+<section id="story">
+    <div class="container">
+        <div class="story-card">
+            <h2 class="story-title">This Wasn't Built In A Classroom</h2>
+            <p class="story-body">Every strategy in these guides came from one place — living it. $50,000 in debt. Zero income. A laptop and a decision to fight back. FinanceIntelHub exists because the content that actually helps people doesn't exist yet. Now it does.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════ TESTIMONIALS ══════════════════════════ -->
+<section id="testimonials">
+    <div class="container">
+        <div class="testimonials-head">
+            <p class="section-label">Social Proof</p>
+            <h2 class="section-title bebas">What Readers Are Saying</h2>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"I was drowning in $23K of credit card debt and had no idea where to start. This blueprint gave me a real plan for the first time. Week 3 and I've already paid off my smallest card."</p>
+                <p class="testimonial-author">— Sarah K., Toronto</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"I've read 5 finance books this year. This is the only one that felt like it was written by someone who actually understood what being broke feels like. No fluff. Just real steps."</p>
+                <p class="testimonial-author">— Marcus T., Vancouver</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"The spending audit alone saved me $280 in the first month. I had no idea where my money was going. Now I do. Worth every penny."</p>
+                <p class="testimonial-author">— Priya M., Calgary</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════ PRODUCTS ═════════════════════════════ -->
+<section id="products">
+    <div class="container">
+        <div class="products-head">
+            <p class="section-label">The Collection</p>
+            <h2 class="section-title bebas">The Blueprint Collection</h2>
+            <p class="section-sub">Every product is battle-tested and built from real experience — not theory, not recycled content.</p>
+        </div>
+        <div id="products-grid">
+            <div class="loading-wrap">
+                <div class="spinner"></div>
+                <p>Loading products…</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════ ABOUT ════════════════════════════════ -->
+<section id="about">
+    <div class="container section-pad">
+        <p class="section-label">Why Choose Us</p>
+        <h2 class="section-title bebas">Why FinanceIntelHub?</h2>
+        <p class="section-sub">Built by someone who actually escaped broke — not a guru, not a course reseller.</p>
+        <div class="about-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🏗️</div>
+                <h3 class="feature-title">Built From Reality</h3>
+                <p class="feature-desc">Every strategy, framework and blueprint was forged from actual lived experience — not theory, not YouTube recycled content. This is the real thing.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Zero Fluff</h3>
+                <p class="feature-desc">No 200-page books with 180 pages of padding. Just dense, actionable, proven strategies you can execute starting today — nothing wasted.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📲</div>
+                <h3 class="feature-title">Instant Access</h3>
+                <p class="feature-desc">Every product is a digital download. Buy, download, and start executing within minutes. No waiting. No shipping. No excuses left.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════ BLOG ═════════════════════════════════ -->
+<section id="blog">
+    <div class="container">
+        <div class="blog-head">
+            <p class="section-label">The Blog</p>
+            <h2 class="section-title bebas">THE INTEL</h2>
+            <p class="section-sub">Real finance insights. No recycled tips. No noise.</p>
+        </div>
+        <div class="blog-filters" id="blog-filters">
+            <button class="blog-filter-btn active" data-cat="All">All</button>
+            <button class="blog-filter-btn" data-cat="Investing">Investing</button>
+            <button class="blog-filter-btn" data-cat="Debt">Debt</button>
+            <button class="blog-filter-btn" data-cat="Income">Income</button>
+            <button class="blog-filter-btn" data-cat="News">News</button>
+            <button class="blog-filter-btn" data-cat="Mindset">Mindset</button>
+        </div>
+        <div id="blog-grid">
+            <div class="loading-wrap">
+                <div class="spinner"></div>
+                <p>Loading posts…</p>
+            </div>
+        </div>
+        <div style="text-align:center;padding:2.5rem 0 0">
+            <button id="blog-load-more" class="blog-load-more-btn" style="display:none">Load More Articles →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════ NEWSLETTER ═══════════════════════════ -->
+<section id="newsletter">
+    <div class="newsletter-box">
+        <div class="nl-icon">✉️</div>
+        <h2 class="nl-title bebas">Get Free Finance Strategies Every Week</h2>
+        <p class="nl-sub">Join thousands getting real advice — not recycled tips. Unsubscribe anytime.</p>
+        <form class="nl-form" id="nl-form" action="https://financeintelhub.us21.list-manage.com/subscribe/post" method="POST" target="_blank">
+            <input type="hidden" name="u" value="f35a3efeeae76faf33814e061">
+            <input
+                type="email"
+                class="nl-input"
+                name="EMAIL"
+                placeholder="Enter your email address"
+                required
+                autocomplete="email"
+            >
+            <button type="submit" class="nl-btn">Send Me Strategies</button>
+        </form>
+        <p class="nl-success" id="nl-success">✓ You're in — first strategies arriving soon.</p>
+    </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════ BLOG MODAL ═══════════════════════════ -->
+<div id="blog-modal" class="blog-modal-overlay" role="dialog" aria-modal="true" aria-label="Blog post">
+    <div class="blog-modal-inner">
+        <button class="blog-modal-close" id="blog-modal-close" aria-label="Close post">✕</button>
+        <div id="blog-modal-content"></div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════ FOOTER ═══════════════════════════════ -->
+<div style="border-top:1px solid var(--border)" id="contact">
+    <footer id="footer">
+        <div class="footer-top">
+            <div>
+                <span class="footer-logo-text">FinanceIntelHub</span>
+                <p class="footer-blurb">Real strategies for people who are done being broke.</p>
+            </div>
+            <nav class="footer-nav">
+                <h3>Navigation</h3>
+                <a href="#products">Products</a>
+                <a href="#about">About</a>
+                <a href="#blog">Blog</a>
+                <a href="#newsletter">Newsletter</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <nav class="footer-nav">
+                <h3>Legal</h3>
+                <a href="legal.html#privacy-policy">Privacy Policy</a>
+                <a href="legal.html#terms">Terms &amp; Conditions</a>
+                <a href="legal.html#refund-policy">Refund Policy</a>
+                <a href="legal.html#earnings-disclaimer">Earnings Disclaimer</a>
+            </nav>
+        </div>
+        <div class="footer-social">
+            <a href="https://www.facebook.com/share/1Dqt7FquAh/?mibextid=wwXIfr" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.532-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/financeintelhub1" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://www.threads.net/@financeintelhub1" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="Threads">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><text x="12" y="17" text-anchor="middle" font-size="15" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">T</text></svg>
+            </a>
+            <a href="https://x.com/FinanceIntelHQ" class="footer-social-link" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copy">© 2025 FinanceIntelHub. All rights reserved.</p>
+            <div class="footer-email">
+                <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- type="module" defers execution until after the GSAP defer scripts above have loaded -->
+<script type="module">
+
+/* ── Trust bar content ─────────────────────────────────────────── */
+const TRUST_ITEMS = [
+    'Real Strategies Only',
+    'Zero Fluff',
+    'Instant Download',
+    'Built From Experience',
+    'No Theory',
+    'Financial Freedom',
+];
+
+(function buildMarquee() {
+    const track = document.getElementById('marquee-track');
+    // Interleave ★ separators, then duplicate for seamless CSS loop
+    const withStars = TRUST_ITEMS.flatMap(txt => [txt, '★']);
+    const doubled   = [...withStars, ...withStars];
+    track.innerHTML = doubled.map((txt, i) =>
+        txt === '★'
+            ? `<span class="trust-star">★</span>`
+            : `<span class="trust-item">${txt}</span>`
+    ).join('');
+})();
+
+/* ── Nav scroll behaviour ──────────────────────────────────────── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+/* ── Hero animations ───────────────────────────────────────────── */
+gsap.registerPlugin(ScrollTrigger);
+
+// Set starting positions (CSS already sets opacity:0)
+gsap.set(['.hero-eyebrow','.hero-title','.hero-tagline','.hero-sub','.hero-cta'], { y: 38 });
+
+const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+heroTl
+    .to('.hero-eyebrow', { y: 0, opacity: 1, duration: .7,  delay: .15 })
+    .to('.hero-title',   { y: 0, opacity: 1, duration: 1.0 }, '-=.45')
+    .to('.hero-tagline', { y: 0, opacity: 1, duration: .8  }, '-=.55')
+    .to('.hero-sub',     { y: 0, opacity: 1, duration: .8  }, '-=.55')
+    .to('.hero-cta',     { y: 0, opacity: 1, duration: .7  }, '-=.45')
+    .to('#scroll-arrow', { opacity: .65,     duration: .7  }, '-=.2');
+
+/* ── About cards scroll-in ─────────────────────────────────────── */
+gsap.from('.feature-card', {
+    scrollTrigger: { trigger: '#about', start: 'top 72%' },
+    y: 55, opacity: 0, duration: .75, stagger: .14, ease: 'power2.out'
+});
+
+/* ── Newsletter box scroll-in ──────────────────────────────────── */
+gsap.from('.newsletter-box', {
+    scrollTrigger: { trigger: '#newsletter', start: 'top 80%' },
+    y: 40, opacity: 0, duration: .75, ease: 'power2.out'
+});
+
+/* ── SVG cover generator ───────────────────────────────────────── */
+// Splits a title into 1–3 display lines for the cover art
+function splitTitle(title) {
+    const w = title.toUpperCase().split(' ');
+    if (w.length === 1) return [w[0]];
+    if (w.length === 2) return [w[0], w[1]];
+    if (w.length === 3) return [w[0] + ' ' + w[1], w[2]];
+    return [w[0] + ' ' + w[1], w[2], w.slice(3).join(' ')];
+}
+
+// Generates a premium dark/gold SVG book cover as a base64 data URI
+function makeCoverDataURI(title, badge) {
+    const isNew  = badge && badge.toLowerCase() === 'new';
+    const accent = isNew ? '#00c896' : '#FFD700';
+    const lines  = splitTitle(title);
+    const n      = Math.min(lines.length, 3);
+
+    const layouts = [
+        null,
+        { ys: [160],           fs: 44, divY: 185 },
+        { ys: [128, 175],      fs: 38, divY: 200 },
+        { ys: [108, 150, 190], fs: 32, divY: 212 }
+    ];
+    const layout = layouts[n];
+    const palette = ['#FFD700', '#ffffff', 'rgba(255,215,0,0.8)'];
+
+    const textEls = lines.slice(0, n).map((line, i) =>
+        `<text x="200" y="${layout.ys[i]}" font-family="Georgia,serif" ` +
+        `font-size="${layout.fs}" font-weight="bold" fill="${palette[i]}" text-anchor="middle">${line}</text>`
+    ).join('');
+
+    const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">` +
+        `<defs>` +
+        `<pattern id="p" width="20" height="20" patternUnits="userSpaceOnUse">` +
+        `<circle cx="10" cy="10" r="0.8" fill="rgba(255,215,0,0.1)"/></pattern>` +
+        `<linearGradient id="g" x1="0" y1="0" x2="0" y2="1">` +
+        `<stop offset="0%" stop-color="#111130"/><stop offset="100%" stop-color="#0a0a1a"/>` +
+        `</linearGradient></defs>` +
+        `<rect width="400" height="300" fill="url(#g)"/>` +
+        `<rect width="400" height="300" fill="url(#p)"/>` +
+        `<rect width="400" height="3" fill="${accent}"/>` +
+        `<rect x="32" y="24" width="2" height="252" fill="rgba(255,215,0,0.3)"/>` +
+        `<polyline points="44,30 44,24 50,24" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.5"/>` +
+        `<polyline points="350,24 356,24 356,30" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.5"/>` +
+        `<polyline points="44,270 44,276 50,276" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.5"/>` +
+        `<polyline points="350,276 356,276 356,270" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.5"/>` +
+        `<text x="200" y="52" font-family="Arial,sans-serif" font-size="8" fill="rgba(255,215,0,0.5)" ` +
+        `text-anchor="middle" letter-spacing="4">FINANCEINTELHUB</text>` +
+        `<rect x="100" y="60" width="200" height="0.5" fill="rgba(255,215,0,0.15)"/>` +
+        textEls +
+        `<rect x="80" y="${layout.divY}" width="240" height="0.8" fill="rgba(255,215,0,0.2)"/>` +
+        `<text x="200" y="293" font-family="Arial,sans-serif" font-size="7" ` +
+        `fill="rgba(255,215,0,0.28)" text-anchor="middle" letter-spacing="2">DIGITAL DOWNLOAD</text>` +
+        `</svg>`;
+
+    return 'data:image/svg+xml;base64,' + btoa(svg);
+}
+
+/* ── Products ──────────────────────────────────────────────────── */
+
+// Fallback snapshot — mirrors products.json.
+// Used when fetch() is blocked (file:// protocol).
+// On Netlify, products.json is fetched fresh on every page load.
+const FALLBACK_PRODUCTS = [
+    {
+        title:       'Debt Free Blueprint',
+        description: 'Escape $50K of debt fast — even when you are completely broke. 9 chapters of real strategies from someone who lived it.',
+        price:       '$17',
+        cover:       '',
+        gumroad:     'https://financeintelhub.gumroad.com/l/gfwfbv',
+        badge:       'Bestseller'
+    },
+    {
+        title:       'Zero to Income Blueprint',
+        description: 'Go from zero skills and zero income to earning online in 90 days. A complete week-by-week execution plan.',
+        price:       '$27',
+        cover:       '',
+        gumroad:     'https://financeintelhub.gumroad.com/l/imvwbh',
+        badge:       'New'
+    },
+    {
+        title:       'The Paycheck Trap',
+        description: "Why you're always broke 3 days after payday — and exactly how to escape it. Forever.",
+        price:       '$12',
+        cover:       'covers/paycheck-trap.jpg',
+        gumroad:     'https://financeintelhub.gumroad.com/l/gnsvto',
+        badge:       'Best Value'
+    },
+    {
+        title:       'The Credit Score Fix',
+        description: 'Raise your credit score 100 points in 90 days — even if you think it is too late. 7 chapters, real strategies, zero fluff.',
+        price:       '$7',
+        cover:       'covers/credit-score.jpg',
+        gumroad:     'https://financeintelhub.gumroad.com/l/tfyxjn',
+        badge:       'New'
+    }
+];
+
+function badgeClass(badge) {
+    if (!badge) return '';
+    return badge.toLowerCase() === 'new' ? 'badge-green' : 'badge-gold';
+}
+
+let allProducts = [];
+
+function renderProducts(products) {
+    allProducts = products || [];
+    const grid = document.getElementById('products-grid');
+
+    if (!products || products.length === 0) {
+        grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:3rem">
+            No products found. Add some to products.json.
+        </p>`;
+        return;
+    }
+
+    grid.innerHTML = products.map(p => {
+        // Use provided cover if it's a real URL or data-URI; otherwise generate SVG cover art
+        const coverSrc = (p.cover && !p.cover.startsWith('covers/'))
+            ? p.cover
+            : makeCoverDataURI(p.title, p.badge);
+        return `
+        <div class="product-card">
+            <div class="card-cover">
+                ${p.badge ? `<span class="card-badge ${badgeClass(p.badge)}">${p.badge}</span>` : ''}
+                <img src="${coverSrc}" alt="${p.title} cover" loading="lazy">
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${p.title}</h3>
+                <p class="card-desc">${p.description}</p>
+                <div class="card-foot">
+                    <div>
+                        <span class="card-price">${p.price}</span>
+                        <p class="card-urgency">⚡ Instant download — start today</p>
+                    </div>
+                    <a href="${p.gumroad}" class="btn-card" target="_blank" rel="noopener noreferrer">Get Instant Access →</a>
+                </div>
+                <div class="card-guarantee">
+                    <span class="guarantee-icon">🛡️</span>
+                    <span class="guarantee-text">7-Day Money Back Guarantee</span>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    // Hide cards first, then fade up on scroll
+    gsap.set('.product-card', { opacity: 0, y: 55 });
+    gsap.to('.product-card', {
+        scrollTrigger: {
+            trigger: '#products',
+            start: 'top 75%',
+        },
+        opacity: 1, y: 0,
+        duration: .75, stagger: .14, ease: 'power2.out'
+    });
+    // Recalculate positions after dynamic content injected
+    applyTilt('.product-card');
+    ScrollTrigger.refresh();
+}
+
+async function loadProducts() {
+    try {
+        const res = await fetch('./products.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        renderProducts(data);
+    } catch (err) {
+        // fetch() blocked on file:// — use inline snapshot
+        console.warn('[FinanceIntelHub] Using fallback products.', err.message);
+        console.info('[FinanceIntelHub] For live JSON loading locally, run: python3 -m http.server 8000');
+        renderProducts(FALLBACK_PRODUCTS);
+    }
+}
+
+loadProducts();
+
+/* ═══════════════════════════════════════════════════════════
+   BLOG
+═══════════════════════════════════════════════════════════ */
+
+const FALLBACK_BLOGS = [
+    {
+        id: 1,
+        title: 'PLACEHOLDER - First Post',
+        category: 'News',
+        date: 'May 4, 2026',
+        readTime: '5 min read',
+        summary: 'Placeholder summary',
+        content: 'Placeholder content',
+        tags: ['finance', 'news']
+    }
+];
+
+let allBlogs = [];
+
+function formatBlogContent(content) {
+    if (!content) return '';
+    if (content.includes('<p>') || content.includes('<h2') || content.includes('<h3')) return content;
+    return content.split(/\n\n+/).map(p => p.trim() ? `<p>${p.replace(/\n/g, '<br>')}</p>` : '').join('');
+}
+
+/* ── Blog pagination state ───────────────────────────────── */
+const BLOG_PAGE    = 6;
+let activeCategory = 'All';
+let visibleCount   = BLOG_PAGE;
+let isInitialLoad  = true;
+
+function getSortedFiltered() {
+    const base = activeCategory === 'All'
+        ? allBlogs.slice()
+        : allBlogs.filter(b => b.category === activeCategory);
+    return base.sort((a, b) => Number(b.id) - Number(a.id));
+}
+
+function makeBlogCardHTML(b) {
+    return `
+        <div class="blog-card" data-id="${b.id}">
+            <div class="blog-card-img-wrap">
+                ${b.image
+                    ? `<img src="${b.image}" alt="${b.title}" loading="lazy">`
+                    : `<div class="blog-card-img-placeholder">
+                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                               <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                               <polyline points="21 15 16 10 5 21"/>
+                           </svg>
+                       </div>`}
+            </div>
+            <div class="blog-card-top">
+                <span class="blog-cat-badge">${b.category}</span>
+                <span class="blog-read-time">${b.readTime}</span>
+            </div>
+            <div class="blog-card-body">
+                <h3 class="blog-card-title">${b.title}</h3>
+                <p class="blog-card-summary">${b.summary}</p>
+            </div>
+            <div class="blog-card-foot">
+                <span class="blog-card-date">${b.date}</span>
+                <span class="blog-read-more">Read More →</span>
+            </div>
+        </div>
+    `;
+}
+
+function attachCardClicks() {
+    document.querySelectorAll('#blog-grid .blog-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const post = allBlogs.find(b => String(b.id) === card.dataset.id);
+            if (post) openBlogModal(post);
+        });
+    });
+}
+
+function updateLoadMore(total) {
+    const btn = document.getElementById('blog-load-more');
+    if (btn) btn.style.display = visibleCount >= total ? 'none' : 'block';
+}
+
+function fillGrid(append) {
+    const sorted = getSortedFiltered();
+    const grid   = document.getElementById('blog-grid');
+
+    if (sorted.length === 0) {
+        grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:3rem 0">No posts yet. Add some to blogs.json.</p>`;
+        updateLoadMore(0);
+        return;
+    }
+
+    if (append) {
+        const prevCount = visibleCount - BLOG_PAGE;
+        const newSlice  = sorted.slice(prevCount, visibleCount);
+        const tmp       = document.createElement('div');
+        tmp.innerHTML   = newSlice.map(makeBlogCardHTML).join('');
+        const newEls    = [...tmp.children];
+        newEls.forEach(el => grid.appendChild(el));
+        newEls.forEach(card => {
+            card.addEventListener('click', () => {
+                const post = allBlogs.find(b => String(b.id) === card.dataset.id);
+                if (post) openBlogModal(post);
+            });
+        });
+        gsap.from(newEls, { opacity: 0, y: 30, duration: .5, stagger: .08, ease: 'power2.out' });
+        applyTiltOnElements(newEls);
+    } else {
+        grid.innerHTML = sorted.slice(0, visibleCount).map(makeBlogCardHTML).join('');
+        attachCardClicks();
+        if (isInitialLoad) {
+            isInitialLoad = false;
+            gsap.set('#blog-grid .blog-card', { opacity: 0, y: 50 });
+            gsap.to('#blog-grid .blog-card', {
+                scrollTrigger: { trigger: '#blog', start: 'top 75%' },
+                opacity: 1, y: 0, duration: .7, stagger: .1, ease: 'power2.out'
+            });
+        } else {
+            gsap.from('#blog-grid .blog-card', { opacity: 0, y: 30, duration: .5, stagger: .08, ease: 'power2.out' });
+        }
+        applyTilt('#blog-grid .blog-card');
+    }
+
+    updateLoadMore(sorted.length);
+    ScrollTrigger.refresh();
+}
+
+function switchToCategory(cat) {
+    activeCategory = cat;
+    visibleCount   = BLOG_PAGE;
+    const existing = document.querySelectorAll('#blog-grid .blog-card');
+    if (existing.length > 0) {
+        gsap.to(existing, {
+            opacity: 0, y: -15, duration: .25, ease: 'power2.in',
+            onComplete: () => fillGrid(false)
+        });
+    } else {
+        fillGrid(false);
+    }
+}
+
+/* ── Filter buttons ──────────────────────────────────────── */
+document.getElementById('blog-filters').addEventListener('click', e => {
+    const btn = e.target.closest('.blog-filter-btn');
+    if (!btn || btn.dataset.cat === activeCategory) return;
+    document.querySelectorAll('.blog-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    switchToCategory(btn.dataset.cat);
+});
+
+/* ── Load More ───────────────────────────────────────────── */
+document.getElementById('blog-load-more').addEventListener('click', () => {
+    visibleCount += BLOG_PAGE;
+    fillGrid(true);
+});
+
+/* ── Modal ───────────────────────────────────────────────── */
+function openBlogModal(post) {
+    const modal   = document.getElementById('blog-modal');
+    const content = document.getElementById('blog-modal-content');
+
+    const relatedHTML = allProducts.length ? `
+        <div class="blog-modal-related">
+            <h3 class="blog-modal-related-title">Related Products</h3>
+            <div class="blog-related-grid">
+                ${allProducts.map(p => `
+                    <a href="${p.gumroad}" class="blog-related-card" target="_blank" rel="noopener noreferrer">
+                        <div class="blog-related-name">${p.title}</div>
+                        <div class="blog-related-price">${p.price}</div>
+                    </a>`).join('')}
+            </div>
+        </div>` : '';
+
+    const pageURL    = encodeURIComponent(window.location.href);
+    const postTitle  = encodeURIComponent(post.title);
+    const twitterURL = `https://twitter.com/intent/tweet?text=${postTitle}&url=${pageURL}`;
+    const fbURL      = `https://www.facebook.com/sharer/sharer.php?u=${pageURL}`;
+    const threadsURL = `https://www.threads.net/intent/post?text=${postTitle}%20${pageURL}`;
+
+    content.innerHTML = `
+        <div class="blog-modal-meta">
+            <span class="blog-modal-cat">${post.category}</span>
+            <span class="blog-modal-date">${post.date}</span>
+            <span class="blog-modal-readtime">${post.readTime}</span>
+        </div>
+        <h2 class="blog-modal-title">${post.title}</h2>
+        <div class="blog-modal-body">${formatBlogContent(post.content)}</div>
+        ${relatedHTML}
+        <div class="blog-modal-share">
+            <p class="blog-share-title">Share This Article</p>
+            <div class="blog-share-buttons">
+                <a href="${fbURL}" class="blog-share-btn-styled" style="background:#1877F2" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.532-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    Facebook
+                </a>
+                <a href="${twitterURL}" class="blog-share-btn-styled" style="background:#000000" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    X / Twitter
+                </a>
+                <a href="${threadsURL}" class="blog-share-btn-styled" style="background:#000000" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="15" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">T</text></svg>
+                    Threads
+                </a>
+                <button class="blog-share-btn-styled blog-share-btn-copy" style="background:#FFD700" id="copy-link-btn">
+                    <svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"/></svg>
+                    Copy Link
+                </button>
+            </div>
+        </div>`;
+
+    content.querySelector('#copy-link-btn').addEventListener('click', function () {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            const orig = this.innerHTML;
+            this.innerHTML = '✓ Copied!';
+            setTimeout(() => { this.innerHTML = orig; }, 2000);
+        });
+    });
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => requestAnimationFrame(() => modal.classList.add('visible')));
+    modal.scrollTop = 0;
+}
+
+function closeBlogModal() {
+    const modal = document.getElementById('blog-modal');
+    modal.classList.remove('visible');
+    document.body.style.overflow = '';
+    setTimeout(() => modal.classList.remove('open'), 300);
+}
+
+document.getElementById('blog-modal-close').addEventListener('click', closeBlogModal);
+document.getElementById('blog-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('blog-modal')) closeBlogModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBlogModal(); });
+
+/* ── Load blogs.json ─────────────────────────────────────── */
+async function loadBlogs() {
+    try {
+        const res = await fetch('./blogs.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        allBlogs = await res.json();
+    } catch (err) {
+        console.warn('[FinanceIntelHub] Using fallback blogs.', err.message);
+        allBlogs = FALLBACK_BLOGS;
+    }
+    fillGrid(false);
+}
+
+/* ── Touch detection ─────────────────────────────────────────── */
+function isTouchDevice() { return window.matchMedia('(hover: none)').matches; }
+
+/* ── VanillaTilt helpers ─────────────────────────────────────── */
+function applyTiltOnElements(elements) {
+    if (isTouchDevice() || typeof VanillaTilt === 'undefined' || !elements.length) return;
+    VanillaTilt.init(elements, { max: 15, speed: 400, glare: true, 'max-glare': 0.3, perspective: 1000 });
+}
+function applyTilt(selector) {
+    applyTiltOnElements([...document.querySelectorAll(selector)]);
+}
+
+/* ── Three.js hero particle background ───────────────────────── */
+(function initParticles() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 6;
+
+    const count = 200;
+    const pos   = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+        pos[i * 3]     = (Math.random() - 0.5) * 22;
+        pos[i * 3 + 1] = (Math.random() - 0.5) * 16;
+        pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+    const mat = new THREE.PointsMaterial({ color: 0xFFD700, size: 0.06, transparent: true, opacity: 0.65, sizeAttenuation: true });
+    const particles = new THREE.Points(geo, mat);
+    scene.add(particles);
+
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => {
+        mx = (e.clientX / window.innerWidth  - 0.5) * 2;
+        my = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    (function animate() {
+        requestAnimationFrame(animate);
+        particles.rotation.y  += 0.0004;
+        particles.rotation.x  += 0.00015;
+        camera.position.x += (mx * 0.6 - camera.position.x) * 0.04;
+        camera.position.y += (-my * 0.4 - camera.position.y) * 0.04;
+        renderer.render(scene, camera);
+    })();
+})();
+
+/* ── 3D scroll-in for each section ──────────────────────────── */
+['#social-proof','#story','#testimonials','#products','#about','#blog','#newsletter'].forEach(sel => {
+    const el = document.querySelector(sel);
+    if (!el) return;
+    gsap.set(el, { transformPerspective: 1000, transformOrigin: 'center top' });
+    gsap.fromTo(el,
+        { opacity: 0, rotateX: 5 },
+        { scrollTrigger: { trigger: el, start: 'top 88%' }, opacity: 1, rotateX: 0, duration: 0.8, ease: 'power2.out' }
+    );
+});
+
+/* ── Magnetic gold CTA buttons ───────────────────────────────── */
+if (!isTouchDevice()) {
+    const magnetBtns  = document.querySelectorAll('.btn-primary, .btn-ghost, .nl-btn');
+    const magnetState = new Map([...magnetBtns].map(b => [b, false]));
+
+    document.addEventListener('mousemove', function(e) {
+        magnetBtns.forEach(btn => {
+            const r    = btn.getBoundingClientRect();
+            const dx   = e.clientX - (r.left + r.width  / 2);
+            const dy   = e.clientY - (r.top  + r.height / 2);
+            const dist = Math.hypot(dx, dy);
+            const was  = magnetState.get(btn);
+            if (dist < 60) {
+                magnetState.set(btn, true);
+                const s = (1 - dist / 60) * 0.45;
+                gsap.to(btn, { x: dx * s, y: dy * s, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+            } else if (was) {
+                magnetState.set(btn, false);
+                gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.4)', overwrite: 'auto' });
+            }
+        });
+    }, { passive: true });
+}
+
+loadBlogs();
+</script>
+
+<!-- ── Cookie Consent Banner ──────────────────────────────────── -->
+<div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie consent">
+    <p class="cookie-text">We use cookies and analytics tools to improve your experience and understand our traffic. IP addresses are anonymised. By continuing to use this site you accept our Cookie Policy.</p>
+    <div class="cookie-actions">
+        <button class="cookie-accept" id="cookie-accept">Accept</button>
+        <a href="legal.html" target="_blank" rel="noopener noreferrer" class="cookie-learn">Learn More</a>
+    </div>
+</div>
+
+<script>
+// Update URL hash when nav links clicked
+document.querySelectorAll('a[href^="#"]')
+.forEach(link => {
+  link.addEventListener('click', function(e) {
+    const target = this.getAttribute('href');
+    history.pushState(null, null, target);
+  });
+});
+// Cookie consent banner
+(function () {
+    if (localStorage.getItem('cookieConsent')) return;
+    const banner = document.getElementById('cookie-banner');
+    requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('visible')));
+    document.getElementById('cookie-accept').addEventListener('click', () => {
+        localStorage.setItem('cookieConsent', '1');
+        banner.classList.remove('visible');
+    });
+})();
+</script>
+<script id="mcjs">!function(c,h,i,m,p)
+{m=c.createElement(h),p=c.getElementsByTagName(h)[0],
+m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}
+(document,"script","https://chimpstatic.com/mcjs-connected/js/users/f35a3efeeae76faf33814e061/9a68e930be8a5d73873fad57d.js");
+</script>
+</body>
+</html>

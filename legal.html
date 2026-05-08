@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Legal documents for FinanceIntelHub — Privacy Policy, Terms and Conditions, Refund Policy, Earnings Disclaimer, and more.">
+    <title>Legal — FinanceIntelHub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap">
+    </noscript>
+
+    <style>
+        /* ── Reset ─────────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* ── Design tokens ─────────────────────────────────────── */
+        :root {
+            --bg:           #0a0a0f;
+            --bg-card:      #0f0f1a;
+            --gold:         #FFD700;
+            --gold-dim:     rgba(255,215,0,.22);
+            --gold-glow:    rgba(255,215,0,.08);
+            --gold-shadow:  rgba(255,215,0,.35);
+            --white:        #ffffff;
+            --light:        #d4d4e8;
+            --muted:        #7a7a99;
+            --border:       rgba(255,215,0,.1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar            { width: 5px; }
+        ::-webkit-scrollbar-track      { background: var(--bg); }
+        ::-webkit-scrollbar-thumb      { background: var(--gold-dim); border-radius: 3px; }
+
+        .bebas { font-family: 'Bebas Neue', cursive; letter-spacing: .03em; }
+
+        /* ── Nav ─────────────────────────────────────────────────── */
+        #nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            padding: 1.4rem 4rem;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(10,10,15,.94);
+            backdrop-filter: blur(22px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.55rem; letter-spacing: .06em;
+            color: var(--gold); text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+        .nav-links a {
+            color: var(--light); text-decoration: none;
+            font-size: .82rem; font-weight: 500;
+            letter-spacing: .1em; text-transform: uppercase;
+            transition: color .2s;
+        }
+        .nav-links a:hover { color: var(--gold); }
+        @media (max-width: 768px) {
+            #nav { padding: 1.1rem 1.4rem; }
+            .nav-links { display: none; }
+        }
+
+        /* ── Legal Header ────────────────────────────────────────── */
+        .legal-header {
+            padding: 9rem 4rem 4.5rem;
+            text-align: center;
+            background:
+                radial-gradient(ellipse at 50% -5%, rgba(255,215,0,.11) 0%, transparent 55%),
+                var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+        .legal-header-label {
+            font-size: .72rem; letter-spacing: .28em; text-transform: uppercase;
+            color: var(--gold); font-weight: 600; margin-bottom: 1rem;
+        }
+        .legal-header-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(3.2rem, 8vw, 6.5rem);
+            line-height: .95; letter-spacing: .02em;
+            margin-bottom: 1.2rem;
+        }
+        .legal-header-sub {
+            font-size: .95rem; color: var(--muted);
+            max-width: 540px; margin: 0 auto;
+            line-height: 1.72;
+        }
+        @media (max-width: 768px) { .legal-header { padding: 7rem 1.4rem 3rem; } }
+
+        /* ── Main Wrap ───────────────────────────────────────────── */
+        .legal-wrap {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 4rem 4rem 6rem;
+        }
+        @media (max-width: 768px) { .legal-wrap { padding: 2.5rem 1.4rem 5rem; } }
+
+        /* ── Table of Contents ────────────────────────────────────── */
+        .toc-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 14px 14px 0;
+            padding: 2.2rem 2.4rem;
+            margin-bottom: 4rem;
+        }
+        .toc-label {
+            font-size: .68rem; letter-spacing: .24em; text-transform: uppercase;
+            color: var(--gold); font-weight: 600; margin-bottom: .6rem;
+        }
+        .toc-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.55rem; letter-spacing: .03em;
+            color: var(--white); margin-bottom: 1.4rem;
+        }
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: .3rem .5rem;
+        }
+        .toc-list a {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            padding: .48rem .7rem;
+            border-radius: 6px;
+            color: var(--light);
+            text-decoration: none;
+            font-size: .88rem;
+            font-weight: 500;
+            transition: background .2s, color .2s;
+        }
+        .toc-list a:hover {
+            background: var(--gold-glow);
+            color: var(--gold);
+        }
+        .toc-num {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1rem; letter-spacing: .06em;
+            color: var(--gold);
+            min-width: 26px;
+            flex-shrink: 0;
+        }
+
+        /* ── Legal Sections ──────────────────────────────────────── */
+        .legal-section {
+            margin-bottom: 5rem;
+            scroll-margin-top: 6rem;
+        }
+        .legal-section-num {
+            font-size: .68rem; letter-spacing: .24em; text-transform: uppercase;
+            color: var(--gold); font-weight: 600; margin-bottom: .6rem;
+        }
+        .legal-section-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            letter-spacing: .02em; line-height: 1;
+            margin-bottom: 2rem;
+            padding-bottom: 1.1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .legal-section h3 {
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin: 2rem 0 .65rem;
+        }
+        .legal-section p {
+            font-size: .95rem;
+            color: var(--light);
+            line-height: 1.82;
+            margin-bottom: 1rem;
+        }
+        .legal-section ul,
+        .legal-section ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.1rem;
+        }
+        .legal-section li {
+            font-size: .95rem;
+            color: var(--light);
+            line-height: 1.78;
+            margin-bottom: .4rem;
+        }
+        .legal-section a {
+            color: var(--gold);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            transition: opacity .2s;
+        }
+        .legal-section a:hover { opacity: .75; }
+        .legal-section strong { color: var(--white); font-weight: 600; }
+        .legal-section em { color: var(--muted); font-style: italic; }
+        .legal-section code {
+            background: rgba(255,215,0,.08);
+            border: 1px solid var(--gold-dim);
+            border-radius: 3px;
+            padding: .1rem .4rem;
+            font-family: monospace;
+            font-size: .88rem;
+            color: var(--gold);
+        }
+
+        .legal-highlight {
+            background: var(--gold-glow);
+            border: 1px solid var(--gold-dim);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.2rem 1.5rem;
+            margin: 1.4rem 0;
+        }
+        .legal-highlight p {
+            margin: 0;
+            font-size: .9rem;
+            font-weight: 500;
+            line-height: 1.7;
+        }
+        .legal-highlight p + p { margin-top: .5rem; }
+
+        .legal-contact-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem 1.8rem;
+            margin: 1.5rem 0;
+        }
+        .legal-contact-box p {
+            margin: 0;
+            font-size: .9rem;
+        }
+        .legal-contact-box p + p { margin-top: .45rem; }
+
+        /* ── Footer ──────────────────────────────────────────────── */
+        .legal-footer-wrap {
+            border-top: 1px solid var(--border);
+        }
+        .legal-footer {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 3rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        @media (max-width: 640px) {
+            .legal-footer { padding: 2.5rem 1.4rem; }
+            .legal-footer-meta { text-align: left !important; }
+        }
+        .legal-footer-logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.9rem; color: var(--gold);
+            letter-spacing: .05em;
+            text-decoration: none;
+            display: block;
+            margin-bottom: .5rem;
+        }
+        .legal-footer p {
+            color: var(--muted);
+            font-size: .8rem;
+            line-height: 1.7;
+        }
+        .legal-footer a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: opacity .2s;
+        }
+        .legal-footer a:hover { opacity: .75; }
+        .legal-footer-meta {
+            text-align: right;
+        }
+        .legal-footer-meta p { color: var(--muted); font-size: .8rem; line-height: 1.7; }
+        .legal-footer-meta .back-link {
+            display: inline-block;
+            margin-top: .8rem;
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: .04em;
+            transition: opacity .2s;
+        }
+        .legal-footer-meta .back-link:hover { opacity: .75; }
+    </style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav id="nav">
+    <a href="index.html" class="nav-logo">FinanceIntelHub</a>
+    <ul class="nav-links">
+        <li><a href="index.html#products">Products</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#blog">Blog</a></li>
+        <li><a href="index.html#newsletter">Newsletter</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<!-- ═══════ HEADER ═══════ -->
+<header class="legal-header">
+    <p class="legal-header-label">FinanceIntelHub</p>
+    <h1 class="legal-header-title bebas">Legal Documents</h1>
+    <p class="legal-header-sub">These documents govern your use of FinanceIntelHub and its products. Please read each section carefully before purchasing or using our services.</p>
+</header>
+
+<main>
+<div class="legal-wrap">
+
+    <!-- ═══════ TABLE OF CONTENTS ═══════ -->
+    <nav class="toc-card" aria-label="Table of contents">
+        <p class="toc-label">Contents</p>
+        <p class="toc-title bebas">Table of Contents</p>
+        <ul class="toc-list">
+            <li><a href="#privacy-policy"><span class="toc-num">01</span> Privacy Policy</a></li>
+            <li><a href="#terms"><span class="toc-num">02</span> Terms &amp; Conditions</a></li>
+            <li><a href="#refund-policy"><span class="toc-num">03</span> Refund Policy</a></li>
+            <li><a href="#earnings-disclaimer"><span class="toc-num">04</span> Earnings Disclaimer</a></li>
+            <li><a href="#not-financial-advice"><span class="toc-num">05</span> Not Financial Advice</a></li>
+            <li><a href="#cookie-policy"><span class="toc-num">06</span> Cookie Policy</a></li>
+            <li><a href="#gdpr-rights"><span class="toc-num">07</span> GDPR &amp; Privacy Rights</a></li>
+        </ul>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 1: PRIVACY POLICY
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="legal-section" id="privacy-policy">
+        <p class="legal-section-num">Section 01</p>
+        <h2 class="legal-section-title bebas">Privacy Policy</h2>
+
+        <h3>1.1 Who We Are</h3>
+        <p>FinanceIntelHub ("we," "us," or "our") is a digital education business based in Vancouver, British Columbia, Canada. We create and sell digital financial education products via our website and through Gumroad, our third-party payment and delivery platform. For all privacy-related matters, you may contact us at <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a>.</p>
+
+        <h3>1.2 What Personal Data We Collect</h3>
+        <p>We collect the following categories of personal data:</p>
+        <ul>
+            <li><strong>Email addresses</strong> — collected when you voluntarily sign up for our newsletter through the subscription form on our website, powered by Mailchimp.</li>
+            <li><strong>Purchase information</strong> — when you purchase a digital product, your transaction is processed by Gumroad, Inc. We receive purchase confirmation details including your email address and the product purchased. We do not store full payment card details at any time.</li>
+            <li><strong>Analytics and usage data</strong> — we use Google Analytics to collect anonymised data about how visitors interact with our website, including pages visited, time on site, geographic region (country/city), device type, browser type, and referral source.</li>
+            <li><strong>Cookie and tracking data</strong> — our website and third-party tools place cookies and similar technologies on your device. See Section 6 (Cookie Policy) for full details.</li>
+            <li><strong>Social media interaction data</strong> — if you interact with our content on Facebook, Instagram, Threads, or X (Twitter), those platforms may collect data about your interactions subject to their own privacy policies, which are entirely separate from ours. We do not control or have access to data collected by social media platforms about your interactions on their platforms.</li>
+        </ul>
+
+        <h3>1.3 How We Collect Your Data</h3>
+        <ul>
+            <li><strong>Directly from you</strong> — when you enter your email address in our newsletter signup form, send us an email, or purchase a product.</li>
+            <li><strong>Via third-party services</strong> — when you purchase a product through Gumroad, they process your transaction and share purchase confirmation data with us. When you interact with our emails, Mailchimp may track opens and clicks.</li>
+            <li><strong>Automatically</strong> — through cookies and analytics tools when you browse our website.</li>
+        </ul>
+
+        <h3>1.4 Legal Basis for Processing (GDPR)</h3>
+        <p>For users in the European Union and United Kingdom, we process personal data on the following lawful bases:</p>
+        <ul>
+            <li><strong>Consent</strong> — for newsletter subscriptions and email marketing. You may withdraw consent at any time by clicking the unsubscribe link in any email.</li>
+            <li><strong>Contract performance</strong> — to fulfil your purchase of digital products and provide any associated customer support.</li>
+            <li><strong>Legitimate interests</strong> — for website analytics used to improve our website and understand our audience, where these interests are not overridden by your rights.</li>
+            <li><strong>Legal obligation</strong> — to comply with applicable tax, accounting, and legal record-keeping requirements under Canadian law.</li>
+        </ul>
+
+        <h3>1.5 How We Use Your Data</h3>
+        <ul>
+            <li>To send our newsletter and free finance education content to subscribers who have opted in.</li>
+            <li>To fulfil digital product purchases and provide download access.</li>
+            <li>To send transactional emails related to your purchases (order confirmation, download links).</li>
+            <li>To analyse website traffic patterns and improve user experience.</li>
+            <li>To comply with tax, accounting, and legal obligations.</li>
+            <li>To respond to customer service enquiries and refund requests.</li>
+        </ul>
+
+        <h3>1.6 Data Retention</h3>
+        <ul>
+            <li><strong>Newsletter email addresses</strong> — retained until you unsubscribe. You can unsubscribe at any time via the link in any email we send, or by contacting us directly.</li>
+            <li><strong>Purchase records</strong> — retained for 7 years to comply with Canadian tax and accounting obligations (Income Tax Act, Excise Tax Act).</li>
+            <li><strong>Analytics data</strong> — Google Analytics retains anonymised data for 26 months by default.</li>
+            <li><strong>Customer service email correspondence</strong> — retained for up to 2 years, then securely deleted unless a legal obligation requires longer retention.</li>
+        </ul>
+
+        <h3>1.7 Who We Share Your Data With</h3>
+        <p>We do not sell, rent, or trade your personal data to any third party. We share it only with the following service providers who are essential to our operations:</p>
+        <ul>
+            <li><strong>Gumroad, Inc.</strong> (United States) — our payment processing and digital product delivery platform. Gumroad processes your purchase transactions and manages secure download delivery. See <a href="https://gumroad.com/privacy" target="_blank" rel="noopener noreferrer">Gumroad's Privacy Policy</a>.</li>
+            <li><strong>Mailchimp (Intuit Inc.)</strong> (United States) — our email marketing platform used to manage newsletter subscriptions and send email campaigns. Your email address is stored on Mailchimp's servers. See <a href="https://mailchimp.com/legal/privacy/" target="_blank" rel="noopener noreferrer">Mailchimp's Privacy Policy</a>.</li>
+            <li><strong>Google LLC</strong> (United States) — we use Google Analytics to analyse website usage. Google may process anonymised IP address and behavioural data. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.</li>
+        </ul>
+        <p>All third-party service providers are contractually required to process your data only as directed by us and in compliance with applicable privacy law.</p>
+
+        <h3>1.8 International Data Transfers</h3>
+        <p>Our service providers (Gumroad, Mailchimp, Google) are based in the United States. If you are located in the EU or UK, your personal data may be transferred to and processed in the US. These transfers are made under appropriate safeguards, including the EU Standard Contractual Clauses (SCCs) approved by the European Commission, or adequacy decisions where applicable. You may request more information about the specific transfer mechanisms in place by contacting us.</p>
+
+        <h3>1.9 Your Privacy Rights</h3>
+        <p>Depending on your jurisdiction, you have the following rights regarding your personal data:</p>
+
+        <p><strong>EU and UK users (GDPR / UK GDPR):</strong></p>
+        <ul>
+            <li>Right to access the personal data we hold about you</li>
+            <li>Right to rectification of inaccurate or incomplete data</li>
+            <li>Right to erasure ("right to be forgotten") in certain circumstances</li>
+            <li>Right to restrict processing</li>
+            <li>Right to data portability</li>
+            <li>Right to object to processing</li>
+            <li>Right to withdraw consent at any time</li>
+            <li>Right to lodge a complaint with a supervisory authority</li>
+        </ul>
+        <p>See Section 7 for full details on exercising these rights.</p>
+
+        <p><strong>Canadian users (PIPEDA):</strong></p>
+        <ul>
+            <li>Right to know what personal information we hold about you</li>
+            <li>Right to access your personal information upon written request</li>
+            <li>Right to challenge the accuracy of your data and have it corrected</li>
+            <li>Right to complain to the Office of the Privacy Commissioner of Canada</li>
+        </ul>
+
+        <p><strong>California residents (CCPA):</strong></p>
+        <ul>
+            <li>Right to know what personal information is collected, used, shared, or sold</li>
+            <li>Right to request deletion of your personal information</li>
+            <li>Right to opt-out of the sale of personal information (note: we do not sell personal data)</li>
+            <li>Right to non-discrimination for exercising your CCPA rights</li>
+        </ul>
+
+        <h3>1.10 How to Exercise Your Rights</h3>
+        <p>To exercise any of your privacy rights, please contact us at <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a> with the subject line "Privacy Rights Request." Please include your name and the email address associated with your account or purchase. We may ask you to verify your identity before processing your request. We aim to respond within 30 days.</p>
+
+        <h3>1.11 Data Security</h3>
+        <p>We take reasonable technical and organisational measures to protect your personal data against accidental loss, unauthorised access, alteration, or disclosure. However, no internet transmission is completely secure, and we cannot guarantee the absolute security of data transmitted to or from our website.</p>
+
+        <h3>1.12 Changes to This Policy</h3>
+        <p>We may update this Privacy Policy from time to time. When we do, we will revise the "Last Updated" date at the bottom of this page. We encourage you to review this policy periodically. Continued use of our website after changes are posted constitutes your acceptance of the updated policy.</p>
+
+        <div class="legal-highlight">
+            <p>Privacy requests and enquiries: <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a></p>
+            <p>We aim to respond to all privacy-related requests within <strong>30 days</strong> of receipt.</p>
+        </div>
+
+        <p><em>Last Updated: May 2026</em></p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 2: TERMS AND CONDITIONS
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="legal-section" id="terms">
+        <p class="legal-section-num">Section 02</p>
+        <h2 class="legal-section-title bebas">Terms &amp; Conditions</h2>
+
+        <h3>2.1 Acceptance of Terms</h3>
+        <p>By accessing or using the FinanceIntelHub website or by purchasing any of our digital products, you agree to be bound by these Terms and Conditions in full. If you do not agree with any part of these terms, you must not use our website or purchase our products. These terms apply to all visitors, users, and customers of FinanceIntelHub.</p>
+
+        <h3>2.2 Description of Services</h3>
+        <p>FinanceIntelHub creates and sells digital educational products, including PDF guides, workbooks, frameworks, and strategies related to personal finance, debt management, income generation, credit improvement, and financial literacy. All products are delivered digitally via Gumroad, our third-party payment and product delivery platform.</p>
+        <p>Our products are intended exclusively for educational and informational purposes. They do not constitute professional financial, investment, legal, or tax advice. See Section 5 (Not Financial Advice) for our full disclaimer.</p>
+
+        <h3>2.3 Intellectual Property</h3>
+        <p>All content produced and published by FinanceIntelHub — including but not limited to written text, PDF guides, strategies, frameworks, graphics, logos, branding, and all other materials — is the exclusive intellectual property of FinanceIntelHub and is protected by copyright law in Canada and internationally under the Berne Convention and applicable treaties.</p>
+        <p>When you purchase a digital product from FinanceIntelHub, you are granted a <strong>limited, personal, non-exclusive, non-transferable, revocable licence</strong> to use that product for your own personal, non-commercial purposes only. This licence does not transfer ownership of the product or any intellectual property rights to you. All rights not expressly granted are reserved.</p>
+
+        <h3>2.4 Prohibited Uses</h3>
+        <p>By purchasing or accessing our products, you expressly agree that you will not:</p>
+        <ul>
+            <li>Resell, redistribute, sublicense, or commercially exploit any of our digital products or any portion thereof, whether for a fee or free of charge;</li>
+            <li>Share, post, upload, or distribute download links, product files, or any portion of our content with any third party by any means;</li>
+            <li>Reproduce, copy, duplicate, screenshot, or repurpose our content in any medium without our prior written permission;</li>
+            <li>Claim authorship, ownership, or original creation of our content, strategies, frameworks, or any derivative work based on our materials;</li>
+            <li>Use our content to create derivative works intended for commercial distribution without our express written consent;</li>
+            <li>Upload our products to any file-sharing platform, torrent site, cloud storage, or any publicly accessible location;</li>
+            <li>Use our products in connection with any activity that violates applicable local, national, or international laws or regulations;</li>
+            <li>Attempt to reverse engineer, extract, or repurpose the underlying structure of our products.</li>
+        </ul>
+        <p>Violation of any of these prohibitions may result in immediate termination of your product licence, civil legal action for damages, and reporting to relevant intellectual property authorities where applicable.</p>
+
+        <h3>2.5 Digital Product Delivery</h3>
+        <p>All FinanceIntelHub products are delivered digitally via Gumroad. Upon successful payment processing, you will receive an automated email containing your download link. FinanceIntelHub is not responsible for delivery delays caused by incorrect email addresses provided at checkout, spam filters blocking automated emails, or technical issues with Gumroad's platform. If you do not receive your product within 24 hours of purchase, contact us at <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a>.</p>
+
+        <h3>2.6 Disclaimer of Warranties</h3>
+        <p>Our website and products are provided on an "as is" and "as available" basis, without warranties of any kind, either express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement. We do not warrant that our website will be uninterrupted, error-free, or free from viruses or other harmful components. We make no warranty that our products will meet your specific requirements or produce any particular financial outcome.</p>
+
+        <h3>2.7 Limitation of Liability</h3>
+        <p>To the maximum extent permitted by applicable law, FinanceIntelHub and its owner(s) shall not be liable for any indirect, incidental, special, consequential, punitive, or exemplary damages — including but not limited to loss of profits, loss of data, loss of goodwill, business interruption, or financial losses — arising from your use of or inability to use our website or products, even if we have been advised of the possibility of such damages.</p>
+        <p>Our total cumulative liability to you for any claim arising from or related to our products or services shall not exceed the total amount you paid to us for the specific product giving rise to the claim in the six months preceding the claim.</p>
+
+        <h3>2.8 Governing Law and Jurisdiction</h3>
+        <p>These Terms and Conditions are governed by and construed exclusively in accordance with the laws of the Province of British Columbia and the applicable federal laws of Canada. You irrevocably agree to submit to the exclusive jurisdiction of the courts located in British Columbia, Canada for the resolution of any dispute arising from or related to these terms or your use of our products or website.</p>
+
+        <h3>2.9 Dispute Resolution</h3>
+        <p>In the event of a dispute, we strongly encourage you to contact us first at <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a> with a clear description of the issue. We will make a good-faith effort to resolve the matter within 30 days of receiving your written notice. If we cannot reach an amicable resolution within that period, either party may pursue available legal remedies in the courts of British Columbia, Canada.</p>
+
+        <h3>2.10 Severability</h3>
+        <p>If any provision of these Terms and Conditions is found to be invalid, unlawful, or unenforceable by a court of competent jurisdiction, that provision shall be severed from the remaining terms, which shall continue in full force and effect.</p>
+
+        <h3>2.11 Entire Agreement</h3>
+        <p>These Terms and Conditions, together with our Privacy Policy, Refund Policy, Earnings Disclaimer, and Not Financial Advice disclaimer, constitute the entire agreement between you and FinanceIntelHub with respect to your use of our website and products, and supersede all prior agreements, representations, or understandings.</p>
+
+        <h3>2.12 Changes to Terms</h3>
+        <p>We reserve the right to update, modify, or replace these Terms and Conditions at any time at our sole discretion. Changes will be posted on this page with an updated date. Your continued use of our website or products after changes are posted constitutes your acceptance of the revised terms.</p>
+
+        <div class="legal-highlight">
+            <p>Questions about these Terms? Contact us at <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a></p>
+        </div>
+
+        <p><em>Last Updated: May 2026</em></p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 3: REFUND POLICY
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="legal-section" id="refund-policy">
+        <p class="legal-section-num">Section 03</p>
+        <h2 class="legal-section-title bebas">Refund Policy</h2>
+
+        <h3>3.1 Our Commitment to Quality</h3>
+        <p>We stand behind the quality and value of every product we produce. Each FinanceIntelHub guide is carefully written from real experience and reviewed before publication. If you experience a genuine issue with your purchase, we are committed to addressing it fairly and promptly.</p>
+
+        <h3>3.2 Refund Window</h3>
+        <p>All refund requests must be submitted within <strong>7 calendar days</strong> of the original purchase date. Requests received after this window will not be considered under any circumstances, as our products are digital goods that are delivered and accessible immediately upon purchase.</p>
+
+        <h3>3.3 Eligible Grounds for a Refund</h3>
+        <p>We will review and approve a refund if <strong>one or more</strong> of the following conditions is clearly demonstrated:</p>
+        <ul>
+            <li><strong>Corrupted or unreadable file</strong> — the product file you received is technically defective, corrupted, or cannot be opened on any standard PDF-reading device or application after reasonable attempts.</li>
+            <li><strong>Significantly misrepresented product</strong> — the product is materially and substantially different from what was explicitly described on the product listing page at the time of your purchase.</li>
+        </ul>
+
+        <p>All refund requests are assessed solely at the discretion of FinanceIntelHub based on evidence provided by the customer. Submission of a refund request does not guarantee approval. We reserve the right to request additional documentation or evidence before making a final decision.</p>
+
+        <h3>3.4 Non-Eligible Grounds</h3>
+        <p>The following are <strong>not</strong> valid grounds for a refund, and requests based solely on these reasons will be declined:</p>
+        <ul>
+            <li>You have changed your mind after downloading and reading the product in full or in part;</li>
+            <li>You found the content did not align with your personal expectations, interpretation, or preferences, even if the product accurately matched its description;</li>
+            <li>You claim the product did not produce a specific financial result — our products are educational guides and make no performance guarantees (see Sections 4 and 5);</li>
+            <li>You state that the strategies "don't work for you" without a specific, verifiable product defect;</li>
+            <li>You purchased the product accidentally but have since accessed and downloaded it;</li>
+            <li>You discovered similar free content available online after purchasing;</li>
+            <li>More than 7 calendar days have elapsed since your original purchase date.</li>
+        </ul>
+
+        <div class="legal-highlight">
+            <p><strong>Important:</strong> Our products are digital goods delivered immediately upon purchase. Due to their digital nature, they cannot be "returned." Our refund policy is intentionally limited to genuine product faults — not buyer's remorse or unmet expectations about financial outcomes.</p>
+        </div>
+
+        <h3>3.5 How to Request a Refund</h3>
+        <p>To submit a refund request, send an email to <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a> with the following information:</p>
+        <ul>
+            <li><strong>Subject line:</strong> Refund Request — [Your Gumroad Order Number]</li>
+            <li>Your full name and the email address used at checkout</li>
+            <li>Your Gumroad order number (found in your purchase confirmation email)</li>
+            <li>The name of the product you purchased</li>
+            <li>A clear, specific description of the issue you experienced</li>
+            <li>If claiming a corrupted file, please include a screenshot of the error message</li>
+        </ul>
+        <p>Incomplete refund requests may cause delays in processing. We reserve the right to request additional information to verify any claim.</p>
+
+        <h3>3.6 Processing Time</h3>
+        <p>We review all refund requests within 2 business days of receipt. If your request meets the eligibility criteria, your refund will be processed within <strong>5–7 business days</strong>. Processing times may vary depending on your bank, card issuer, or payment provider. We will notify you by email once the refund has been initiated.</p>
+
+        <h3>3.7 Refund Method</h3>
+        <p>Approved refunds are issued to the original payment method used at the time of purchase, processed via Gumroad's payment system. We do not issue refunds via alternative payment methods, store credit, gift cards, or cash equivalents.</p>
+
+        <p><em>Last Updated: May 2026</em></p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 4: EARNINGS DISCLAIMER
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="legal-section" id="earnings-disclaimer">
+        <p class="legal-section-num">Section 04</p>
+        <h2 class="legal-section-title bebas">Earnings Disclaimer</h2>
+
+        <div class="legal-highlight">
+            <p><strong>Please read this section carefully.</strong> This Earnings Disclaimer is a legally binding part of your agreement with FinanceIntelHub and governs your understanding of what our products can and cannot deliver.</p>
+        </div>
+
+        <h3>4.1 No Earnings Guarantees of Any Kind</h3>
+        <p>FinanceIntelHub makes absolutely <strong>no guarantee, representation, or warranty</strong> — express or implied — that you will earn any specific amount of money, achieve financial freedom, eliminate your debt within any specific timeframe, improve your credit score by any specific amount, or achieve any other particular financial outcome as a result of purchasing, reading, or applying any of our products, guides, strategies, or frameworks.</p>
+
+        <h3>4.2 Individual Results Vary Significantly</h3>
+        <p>Any financial results described, referenced, suggested, or implied in our products, on our website, in our social media content, or in any marketing materials represent possibilities based on individual circumstances — including effort, prior knowledge, financial situation, market conditions, discipline, consistency, and many other variable factors entirely beyond our control. <strong>Your individual results will vary.</strong> They may be significantly less than any example described, or you may achieve no measurable results at all.</p>
+
+        <h3>4.3 Educational Content Only</h3>
+        <p>All content produced and sold by FinanceIntelHub is created and distributed strictly for <strong>educational and informational purposes only</strong>. Our products are designed to educate you about financial concepts, frameworks, and strategies. They are not professional financial services, advice, coaching, consulting, or any other regulated professional service.</p>
+
+        <h3>4.4 Past Performance Is Not Indicative of Future Results</h3>
+        <p>Any financial figures, income examples, debt payoff timelines, credit score improvements, savings amounts, or other performance metrics that may appear in our products or marketing materials are provided solely to illustrate what is <em>possible</em> — they are not a promise, forecast, projection, or representation that you will achieve the same or similar results. All financial scenarios involve variables that change over time, and past performance or results achieved in one context are not a reliable predictor of future performance in any other context.</p>
+
+        <h3>4.5 Success Requires Your Effort, Consistency, and Execution</h3>
+        <p>Any financial improvement you may experience as a result of engaging with our educational content is entirely the product of your own decisions, actions, discipline, and execution. FinanceIntelHub provides educational frameworks and information as starting points. What you do with that information — including whether you act on it, how consistently you apply it, and under what circumstances — is entirely your responsibility. We cannot control, predict, or be held accountable for your results.</p>
+
+        <h3>4.6 Inherent Risk</h3>
+        <p>All personal financial activities carry inherent risk, including the risk of financial loss. Debt management, income generation, investing, credit management, and all other financial activities involve uncertainty and risk. Nothing in our products or on our website should be interpreted as instruction to take any specific financial action without your own independent research and, where appropriate, consultation with a qualified financial professional.</p>
+
+        <h3>4.7 Limitation of Our Liability</h3>
+        <p>FinanceIntelHub, its owner(s), and any affiliated contributors shall <strong>not be held liable</strong> for any financial decisions, actions, losses, gains, tax implications, or any other consequences of any nature that result, directly or indirectly, from the use of or reliance on our educational content, products, website, newsletter, or social media. By purchasing our products or engaging with our content, you acknowledge and accept that you bear full personal responsibility for any decisions you make and their consequences.</p>
+
+        <p><em>Last Updated: May 2026</em></p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 5: NOT FINANCIAL ADVICE
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="legal-section" id="not-financial-advice">
+        <p class="legal-section-num">Section 05</p>
+        <h2 class="legal-section-title bebas">Not Financial Advice</h2>
+
+        <div class="legal-highlight">
+            <p><strong>Nothing on this website, in our newsletter, or in any FinanceIntelHub product constitutes financial, investment, tax, or legal advice of any kind.</strong></p>
+        </div>
+
+        <h3>5.1 We Are Not Licensed Financial Advisors</h3>
+        <p>FinanceIntelHub is an educational content business. We are not licensed, registered, or certified as financial advisors, investment advisors, portfolio managers, financial planners, mortgage brokers, insurance advisors, tax professionals, or legal professionals in any jurisdiction — including Canada, the United States, the United Kingdom, the European Union, or any other country. The founder, owner, and any contributors to FinanceIntelHub do not hold, and do not claim to hold, any regulated financial advisory credentials, designations, or licences.</p>
+
+        <h3>5.2 For Educational and Informational Purposes Only</h3>
+        <p>All content published on this website, in our newsletters, on our social media channels, and within all FinanceIntelHub digital products is created and provided strictly for <strong>educational and informational purposes only</strong>. Our content is designed to help you understand financial concepts, explore general strategies used by others, and build financial literacy. It is not intended to replace, substitute for, or supplement the advice of a qualified financial professional.</p>
+
+        <h3>5.3 No Personalised Financial Advice</h3>
+        <p>The content we produce is general in nature and has not been tailored, assessed, or reviewed in the context of your specific personal financial situation, income level, tax circumstances, debt profile, risk tolerance, investment goals, credit history, family obligations, or any other individual factor. A strategy or framework that is effective in one person's circumstances may be entirely unsuitable or even harmful in another's. Our content does not account for your individual situation.</p>
+
+        <h3>5.4 Always Consult a Qualified Professional</h3>
+        <p>Before making any financial, investment, tax, legal, or major spending decision — including but not limited to decisions about managing debt, starting or changing investments, applying for credit, changing your budgeting strategy, restructuring your finances, or taking any action based on content in our products — you should seek independent, personalised advice from a qualified, licensed professional who can properly assess your specific circumstances. Appropriate professionals to consult include:</p>
+        <ul>
+            <li>A licensed financial advisor or certified financial planner (CFP)</li>
+            <li>A chartered professional accountant (CPA) or tax specialist</li>
+            <li>A licensed mortgage broker or credit counsellor</li>
+            <li>A qualified legal professional (where legally relevant decisions are involved)</li>
+            <li>A licensed investment advisor or portfolio manager (for investment decisions)</li>
+        </ul>
+
+        <h3>5.5 No Liability for Financial Decisions or Losses</h3>
+        <p>FinanceIntelHub, its owner(s), and any contributors expressly and fully disclaim all liability for any financial losses, damages, costs, penalties, tax obligations, missed opportunities, or consequences of any kind — direct or indirect, foreseeable or unforeseeable — that arise from actions taken, or decisions made, or not taken, based in whole or in part on any information, content, strategy, or framework presented in our products, website, newsletter, or social media channels. By engaging with our content, you acknowledge and accept that you are solely responsible for your own financial decisions and all consequences thereof.</p>
+
+        <p><em>Last Updated: May 2026</em></p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 6: COOKIE POLICY
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="legal-section" id="cookie-policy">
+        <p class="legal-section-num">Section 06</p>
+        <h2 class="legal-section-title bebas">Cookie Policy</h2>
+
+        <h3>6.1 What Are Cookies?</h3>
+        <p>Cookies are small text files placed on your device (computer, tablet, or smartphone) when you visit a website. They are widely used to make websites function correctly, remember user preferences, and provide site operators with analytics data. Some cookies are set by the website you are visiting (first-party cookies), while others are set by third-party services that the site uses.</p>
+
+        <h3>6.2 Cookies We Use</h3>
+
+        <p><strong>Functional / Essential Cookies</strong></p>
+        <ul>
+            <li><code>cookieConsent</code> — a first-party value stored in your browser's localStorage that records whether you have accepted our cookie notice. This prevents the consent banner from reappearing on every visit. It persists until you clear your browser data.</li>
+        </ul>
+
+        <p><strong>Analytics Cookies — Google Analytics (Google LLC)</strong></p>
+        <p>We use Google Analytics 4 to understand how visitors interact with our website. The following cookies may be set by Google Analytics:</p>
+        <ul>
+            <li><code>_ga</code> — a persistent cookie used to distinguish unique users by assigning a randomly generated identifier. Expires after <strong>2 years</strong>.</li>
+            <li><code>_ga_[ID]</code> — used by Google Analytics 4 to persist session state. Expires after <strong>2 years</strong>.</li>
+            <li><code>_gid</code> — used to distinguish users. Expires after <strong>24 hours</strong>.</li>
+            <li><code>_gat</code> — used to throttle the rate of Google Analytics requests. Expires after <strong>1 minute</strong>.</li>
+        </ul>
+        <p>Google Analytics collects this information anonymously. We have enabled IP anonymisation, which means IP addresses are truncated before being stored. The data collected may include pages visited, session duration, approximate geographic location (country/region), device type, browser, and referring source. Google may transfer this data to servers in the United States. For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a> and <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics opt-out options</a>.</p>
+
+        <p><strong>Marketing / Tracking Cookies — Mailchimp (Intuit Inc.)</strong></p>
+        <p>If you subscribe to our email newsletter, Mailchimp may place tracking technologies in our emails to record whether you opened an email and whether you clicked any links within it. This helps us understand the effectiveness of our email campaigns and improve our content. Mailchimp may also use cookies when you visit pages linked from our emails. See <a href="https://mailchimp.com/legal/privacy/" target="_blank" rel="noopener noreferrer">Mailchimp's Privacy Policy</a> for full details.</p>
+
+        <h3>6.3 How to Control and Disable Cookies</h3>
+        <p>You have several options to control how cookies are used:</p>
+
+        <p><strong>Browser settings:</strong> All modern browsers allow you to manage cookie preferences. You can block all cookies, accept only certain categories, or receive alerts before a cookie is placed. Note that blocking all cookies may affect the functionality of some websites.</p>
+        <ul>
+            <li><strong>Google Chrome:</strong> Settings → Privacy and Security → Cookies and other site data</li>
+            <li><strong>Mozilla Firefox:</strong> Settings → Privacy &amp; Security → Cookies and Site Data</li>
+            <li><strong>Apple Safari:</strong> Preferences → Privacy → Manage Website Data</li>
+            <li><strong>Microsoft Edge:</strong> Settings → Cookies and site permissions</li>
+        </ul>
+
+        <p><strong>Google Analytics opt-out:</strong> You can prevent Google Analytics from collecting data about your website visits by installing the free <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Browser Add-on</a>.</p>
+
+        <p><strong>Email tracking opt-out:</strong> To prevent Mailchimp email-level tracking, you can disable loading of remote images in your email client settings, or unsubscribe from our newsletter entirely.</p>
+
+        <p>EU users who object to the placement of analytics cookies may opt out at any time using the Google Analytics Opt-out Browser Add-on available at <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">tools.google.com/dlpage/gaoptout</a>. We make reasonable efforts to comply with applicable cookie consent requirements across all jurisdictions we serve.</p>
+
+        <h3>6.4 Impact of Disabling Cookies</h3>
+        <p>If you choose to disable cookies or opt out of analytics tracking, our website will continue to function normally for the most part. However, you should be aware of the following potential impacts:</p>
+        <ul>
+            <li>Your cookie consent preference will not be saved, meaning the consent banner may reappear each time you visit our site.</li>
+            <li>We will have less data available to understand how visitors use our site, reducing our ability to improve the user experience over time.</li>
+            <li>Some third-party features or embedded content linked to from our site may not function correctly.</li>
+        </ul>
+
+        <h3>6.5 Cookie Consent</h3>
+        <p>When you first visit our website, a cookie consent notice will appear at the bottom of the page. By clicking "Accept," you consent to our use of analytics and functional cookies as described in this policy. Your consent preference is stored in your browser's localStorage. You may withdraw your consent at any time by clearing your browser's localStorage and cookies, and revisiting our site.</p>
+
+        <p><em>Last Updated: May 2026</em></p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 7: GDPR & PRIVACY RIGHTS
+    ═══════════════════════════════════════════════════════════ -->
+    <section class="legal-section" id="gdpr-rights">
+        <p class="legal-section-num">Section 07</p>
+        <h2 class="legal-section-title bebas">GDPR &amp; Privacy Rights</h2>
+
+        <p>This section is specifically for users in the <strong>European Union (EU)</strong> and <strong>United Kingdom (UK)</strong>, whose personal data is protected under the General Data Protection Regulation (EU) 2016/679 (GDPR) and the UK GDPR respectively. Canadian users are protected under the Personal Information Protection and Electronic Documents Act (PIPEDA). California residents are protected under the California Consumer Privacy Act (CCPA).</p>
+        <p>We respect your data protection rights and are committed to upholding them. Below is a full explanation of your rights and how to exercise them.</p>
+
+        <h3>7.1 Right to Access</h3>
+        <p>You have the right to request a copy of the personal data we hold about you, along with information about how it is used, where it is stored, who it is shared with, and how long it is retained. We will provide this information free of charge within 30 days of receiving your written request. We may ask you to verify your identity before fulfilling this request to protect your data from unauthorised disclosure.</p>
+
+        <h3>7.2 Right to Rectification</h3>
+        <p>If the personal data we hold about you is inaccurate, outdated, or incomplete, you have the right to request that we correct or complete it. We will action all valid rectification requests within 30 days and notify you when the correction has been made.</p>
+
+        <h3>7.3 Right to Erasure ("Right to Be Forgotten")</h3>
+        <p>You have the right to request that we permanently delete your personal data. This right applies in the following circumstances:</p>
+        <ul>
+            <li>The data is no longer necessary for the purpose for which it was originally collected or processed;</li>
+            <li>You withdraw your consent and there is no other lawful basis for continued processing;</li>
+            <li>You object to the processing under Article 21 GDPR and there are no overriding legitimate grounds;</li>
+            <li>The data has been unlawfully processed;</li>
+            <li>Deletion is required to comply with a legal obligation under EU or UK law.</li>
+        </ul>
+        <p>Please note that we may not be able to erase all personal data where we have a legal obligation to retain it — for example, purchase and transaction records that we must keep for tax and accounting purposes under Canadian law. We will clearly explain any limitations when responding to your request.</p>
+
+        <h3>7.4 Right to Restrict Processing</h3>
+        <p>You have the right to request that we pause or restrict the processing of your personal data in certain defined circumstances:</p>
+        <ul>
+            <li>While we verify the accuracy of data you have contested;</li>
+            <li>Where the processing is unlawful but you prefer restriction over erasure;</li>
+            <li>Where we no longer need the data but you require it for the establishment, exercise, or defence of legal claims;</li>
+            <li>Where you have objected to processing and we are assessing whether our legitimate grounds override yours.</li>
+        </ul>
+
+        <h3>7.5 Right to Data Portability</h3>
+        <p>Where we process your personal data based on your consent or on the performance of a contract, and that processing is carried out by automated means, you have the right to receive your personal data in a structured, commonly used, machine-readable format (such as CSV or JSON). You also have the right to request that we transmit that data directly to another data controller, where technically feasible.</p>
+
+        <h3>7.6 Right to Object</h3>
+        <p>You have the right to object at any time to our processing of your personal data where that processing is based on our legitimate interests or on the performance of a task in the public interest. If you object, we must stop processing your data unless we can demonstrate compelling legitimate grounds for the processing that override your interests, rights, and freedoms — or unless the processing is necessary for the establishment, exercise, or defence of legal claims.</p>
+        <p>You have an <strong>absolute right</strong> to object to the processing of your personal data for direct marketing purposes at any time, with no exceptions. If you exercise this right, we will immediately and permanently cease using your data for direct marketing, including any profiling carried out for marketing purposes.</p>
+
+        <h3>7.7 Rights Related to Automated Decision-Making and Profiling</h3>
+        <p>You have the right not to be subject to a decision made solely on the basis of automated processing — including profiling — where that decision produces legal effects or similarly significantly affects you. FinanceIntelHub does not currently engage in any automated decision-making that produces legal or similarly significant effects on individuals. If this changes in the future, we will update this policy and ensure appropriate safeguards are in place.</p>
+
+        <h3>7.8 Right to Withdraw Consent</h3>
+        <p>Where we rely on your consent as the lawful basis for processing your personal data (for example, for newsletter subscriptions and email marketing communications), you have the right to withdraw that consent at any time. Withdrawal of consent will not affect the lawfulness of any processing we carried out prior to your withdrawal.</p>
+        <p>To withdraw consent from our newsletter: click the unsubscribe link found in the footer of any email we send you, or contact us directly at <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a>. Unsubscribe requests will be processed within 10 business days.</p>
+
+        <h3>7.9 How to Exercise Your Rights</h3>
+        <p>To exercise any of the rights listed above, please submit a written request to us using the contact details below. Please include enough information for us to identify you (name, email address used with us) and clearly describe the right you wish to exercise and the specific action you are requesting.</p>
+
+        <div class="legal-contact-box">
+            <p><strong>Email:</strong> <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a></p>
+            <p><strong>Subject line:</strong> GDPR Rights Request — [Type of Request]</p>
+            <p><strong>Response time:</strong> We will acknowledge your request within 5 business days and respond in full within <strong>30 days</strong>. In complex or high-volume cases, we may extend this by up to 2 additional months — we will notify you promptly if this extension applies.</p>
+            <p><strong>Identity verification:</strong> We may request proof of identity before acting on your request to protect your data from unauthorised access.</p>
+            <p><strong>No fee:</strong> In most cases, we will action your request free of charge. If a request is manifestly unfounded or excessive, we reserve the right to charge a reasonable fee or refuse to act, and will explain our reasons.</p>
+        </div>
+
+        <h3>7.10 Right to Lodge a Complaint with a Supervisory Authority</h3>
+        <p>If you are not satisfied with how we have handled your personal data or responded to a rights request, you have the right to lodge a complaint with the relevant data protection supervisory authority in your country of residence:</p>
+        <ul>
+            <li><strong>UK users</strong> — Information Commissioner's Office (ICO): <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer">ico.org.uk</a> | Tel: 0303 123 1113</li>
+            <li><strong>EU users</strong> — your national Data Protection Authority. A full directory is maintained by the European Data Protection Board at: <a href="https://edpb.europa.eu/about-edpb/about-edpb/members_en" target="_blank" rel="noopener noreferrer">edpb.europa.eu</a></li>
+            <li><strong>Canadian users</strong> — Office of the Privacy Commissioner of Canada: <a href="https://www.priv.gc.ca" target="_blank" rel="noopener noreferrer">priv.gc.ca</a></li>
+        </ul>
+        <p>We always encourage you to contact us directly first so that we have the opportunity to address your concern before you escalate to a supervisory authority.</p>
+
+        <h3>7.11 Data Protection Contact</h3>
+        <p>FinanceIntelHub is a small business and does not currently have a statutory requirement to appoint a Data Protection Officer (DPO). All data protection matters are handled directly by the business owner. For any data protection enquiries, rights requests, or complaints, please contact:</p>
+
+        <div class="legal-highlight">
+            <p><strong>FinanceIntelHub — Data Protection Enquiries</strong></p>
+            <p>Email: <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a></p>
+            <p>Location: Vancouver, British Columbia, Canada</p>
+            <p>Response time: within 30 days of receipt</p>
+        </div>
+
+        <p><em>Last Updated: May 2026</em></p>
+    </section>
+
+</div>
+</main>
+
+<!-- ═══════ FOOTER ═══════ -->
+<div class="legal-footer-wrap">
+    <footer class="legal-footer">
+        <div>
+            <a href="index.html" class="legal-footer-logo bebas">FinanceIntelHub</a>
+            <p>© 2025 FinanceIntelHub. All rights reserved.</p>
+            <p style="margin-top:.4rem"><a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a></p>
+        </div>
+        <div class="legal-footer-meta">
+            <p>Last updated: May 7, 2026</p>
+            <p style="margin-top:.3rem">This document was last reviewed<br>by FinanceIntelHub in May 2026.</p>
+            <a href="index.html" class="back-link">← Back to Main Site</a>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>

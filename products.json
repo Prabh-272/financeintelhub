@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Debt Free Blueprint",
+    "description": "Escape $50K of debt fast — even when you are completely broke. 9 chapters of real strategies from someone who lived it.",
+    "price": "$17",
+    "cover": "",
+    "gumroad": "https://financeintelhub.gumroad.com/l/gfwfbv",
+    "badge": "Bestseller"
+  },
+  {
+    "title": "Zero to Income Blueprint",
+    "description": "Go from zero skills and zero income to earning online in 90 days. A complete week-by-week execution plan.",
+    "price": "$27",
+    "cover": "",
+    "gumroad": "https://financeintelhub.gumroad.com/l/imvwbh",
+    "badge": "New"
+  },
+  {
+    "title": "The Paycheck Trap",
+    "description": "Why you're always broke 3 days after payday — and exactly how to escape it. Forever.",
+    "price": "$12",
+    "cover": "covers/paycheck-trap.jpg",
+    "gumroad": "https://financeintelhub.gumroad.com/l/gnsvto",
+    "badge": "Best Value"
+  },
+  {
+    "title": "The Credit Score Fix",
+    "description": "Raise your credit score 100 points in 90 days — even if you think it is too late. 7 chapters, real strategies, zero fluff.",
+    "price": "$7",
+    "cover": "covers/credit-score.jpg",
+    "gumroad": "https://financeintelhub.gumroad.com/l/tfyxjn",
+    "badge": "New"
+  }
+]
