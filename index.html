@@ -1733,7 +1733,7 @@ function makeBlogCardHTML(b) {
         <div class="blog-card" data-id="${b.id}">
             <div class="blog-card-img-wrap">
                 ${b.image
-                    ? `<img src="${b.image}" alt="${b.title}" loading="lazy">`
+                    ? `<img src="${b.image}" alt="${b.title}" loading="lazy" style="width:100%;height:200px;object-fit:cover;">`
                     : `<div class="blog-card-img-placeholder">
                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
