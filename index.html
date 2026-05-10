@@ -840,6 +840,8 @@
             display: flex;
             flex-direction: column;
             cursor: pointer;
+            opacity: 1 !important;
+            visibility: visible !important;
             transition: transform .35s cubic-bezier(.22,.68,0,1.2),
                         box-shadow .35s, border-color .3s, border-top-color .3s;
         }
@@ -1799,11 +1801,7 @@ function fillGrid(append) {
         attachCardClicks();
         if (isInitialLoad) {
             isInitialLoad = false;
-            gsap.set('#blog-grid .blog-card', { opacity: 0, y: 50 });
-            gsap.to('#blog-grid .blog-card', {
-                scrollTrigger: { trigger: '#blog', start: 'top 75%' },
-                opacity: 1, y: 0, duration: .7, stagger: .1, ease: 'power2.out'
-            });
+            gsap.from('#blog-grid .blog-card', { y: 50, duration: .7, stagger: .1, ease: 'power2.out' });
         } else {
             gsap.from('#blog-grid .blog-card', { opacity: 0, y: 30, duration: .5, stagger: .08, ease: 'power2.out' });
         }
