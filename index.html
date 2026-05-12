@@ -146,6 +146,113 @@
             .nav-links { display: none; }
         }
 
+        /* ── Hamburger button ─────────────────────────────────── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 250;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 2px;
+            transition: all .3s;
+        }
+        @media (max-width: 768px) { .hamburger { display: flex; } }
+
+        /* ── Mobile sidebar ───────────────────────────────────── */
+        #mobile-sidebar {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(10,10,15,.98);
+            backdrop-filter: blur(20px);
+            transform: translateX(100%);
+            transition: transform .35s cubic-bezier(.22,.68,0,1.1);
+            display: flex;
+            flex-direction: column;
+            padding: 5rem 2rem 3rem;
+        }
+        #mobile-sidebar.open { transform: translateX(0); }
+
+        .sidebar-logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.6rem;
+            letter-spacing: .06em;
+            color: var(--gold);
+            text-decoration: none;
+            position: absolute;
+            top: 1.4rem;
+            left: 1.5rem;
+        }
+        .sidebar-close {
+            position: absolute;
+            top: 1.3rem;
+            right: 1.4rem;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--gold);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s, border-color .2s;
+        }
+        .sidebar-close:hover { background: var(--gold-glow); border-color: var(--gold); }
+
+        .sidebar-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+            flex: 1;
+            justify-content: center;
+        }
+        .sidebar-links a {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.4rem;
+            letter-spacing: .05em;
+            color: var(--white);
+            text-decoration: none;
+            transition: color .2s;
+            display: block;
+        }
+        .sidebar-links a:hover { color: var(--gold); }
+
+        .sidebar-social {
+            display: flex;
+            gap: .8rem;
+            justify-content: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .sidebar-social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #0f0f1a;
+            border: 1px solid var(--gold-dim);
+            color: var(--gold);
+            text-decoration: none;
+            transition: background .2s, border-color .2s;
+        }
+        .sidebar-social-link:hover { background: var(--gold); color: #0a0a0f; }
+        .sidebar-social-link svg { width: 16px; height: 16px; fill: currentColor; display: block; }
+
         /* ═══════════════════════════════════════════════════════════
            HERO
         ═══════════════════════════════════════════════════════════ */
@@ -1225,14 +1332,19 @@
 
 <!-- ═══════════════════════════════════ NAV ═══════════════════════════════════ -->
 <nav id="nav">
-    <a href="#hero" class="nav-logo">FinanceIntelHub</a>
+    <a href="index.html" class="nav-logo">FinanceIntelHub</a>
     <ul class="nav-links">
         <li><a href="#products">Products</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="blog.html">Blog</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html">The Intel</a></li>
         <li><a href="#newsletter">Newsletter</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="contact.html">Contact</a></li>
     </ul>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 </nav>
 
 <main>
@@ -1400,6 +1512,33 @@
 
 </main>
 
+<!-- ═══════════════════════════════════ MOBILE SIDEBAR ══════════════════════ -->
+<div id="mobile-sidebar" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <a href="index.html" class="sidebar-logo">FinanceIntelHub</a>
+    <button class="sidebar-close" id="sidebar-close" aria-label="Close menu">&#10005;</button>
+    <ul class="sidebar-links">
+        <li><a href="#products">Products</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="blog.html">The Intel</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="sidebar-social">
+        <a href="https://www.facebook.com/share/1Dqt7FquAh/?mibextid=wwXIfr" class="sidebar-social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.532-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/financeintelhub1" class="sidebar-social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.threads.net/@financeintelhub1" class="sidebar-social-link" target="_blank" rel="noopener noreferrer" aria-label="Threads">
+            <svg viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="15" font-weight="900" font-family="Arial,sans-serif" fill="currentColor">T</text></svg>
+        </a>
+        <a href="https://x.com/FinanceIntelHQ" class="sidebar-social-link" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+    </div>
+</div>
+
 <!-- ═══════════════════════════════════ BLOG MODAL ═══════════════════════════ -->
 <div id="blog-modal" class="blog-modal-overlay" role="dialog" aria-modal="true" aria-label="Blog post">
     <div class="blog-modal-inner">
@@ -1419,10 +1558,10 @@
             <nav class="footer-nav">
                 <h3>Navigation</h3>
                 <a href="#products">Products</a>
-                <a href="#about">About</a>
-                <a href="blog.html">Blog</a>
+                <a href="about.html">About</a>
+                <a href="blog.html">The Intel</a>
                 <a href="#newsletter">Newsletter</a>
-                <a href="#contact">Contact</a>
+                <a href="contact.html">Contact</a>
             </nav>
             <nav class="footer-nav">
                 <h3>Legal</h3>
@@ -1447,7 +1586,7 @@
             </a>
         </div>
         <div class="footer-bottom">
-            <p class="footer-copy">© 2025 FinanceIntelHub. All rights reserved.</p>
+            <p class="footer-copy">© 2026 FinanceIntelHub. All rights reserved.</p>
             <div class="footer-email">
                 <a href="mailto:Financeintelhub1@gmail.com">Financeintelhub1@gmail.com</a>
             </div>
@@ -2032,6 +2171,31 @@ if (!isTouchDevice()) {
 }
 
 loadBlogs();
+
+/* ── Hamburger / Mobile Sidebar ──────────────────────────── */
+(function() {
+    const hamburger = document.getElementById('hamburger');
+    const sidebar   = document.getElementById('mobile-sidebar');
+    const closeBtn  = document.getElementById('sidebar-close');
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        hamburger.setAttribute('aria-expanded', 'true');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        document.body.style.overflow = '';
+        hamburger.setAttribute('aria-expanded', 'false');
+    }
+
+    if (hamburger) hamburger.addEventListener('click', openSidebar);
+    if (closeBtn)  closeBtn.addEventListener('click', closeSidebar);
+    if (sidebar) {
+        sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', closeSidebar));
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSidebar(); });
+})();
 </script>
 
 <!-- ── Cookie Consent Banner ──────────────────────────────────── -->
