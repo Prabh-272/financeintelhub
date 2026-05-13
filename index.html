@@ -1259,66 +1259,130 @@
             .blog-share-btn-styled { justify-content: center; }
         }
 
-        /* ── Cookie Consent Banner ──────────────────────────────── */
-        #cookie-banner {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            z-index: 9999;
-            background: rgba(10,10,15,.97);
-            border-top: 1px solid var(--border);
-            padding: .85rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1.2rem;
-            flex-wrap: wrap;
-            backdrop-filter: blur(12px);
-            transform: translateY(100%);
-            transition: transform .4s cubic-bezier(.22,.68,0,1.1);
+        /* ── Cookie Banner ── */
+        .cookie-banner {
+          position: fixed; bottom: -200px; left: 0; right: 0;
+          z-index: 99990; padding: 0 20px 20px;
+          transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        #cookie-banner.visible { transform: translateY(0); }
-        .cookie-text {
-            font-size: .82rem;
-            color: var(--light);
-            line-height: 1.55;
-            flex: 1;
-            min-width: 200px;
+        .cookie-banner.show { bottom: 0; }
+        .cookie-inner {
+          background: #16161f; border: 1px solid rgba(255,215,0,0.2);
+          border-radius: 16px; padding: 20px 24px;
+          display: flex; align-items: center; justify-content: space-between;
+          gap: 20px; max-width: 900px; margin: 0 auto;
+          box-shadow: 0 -4px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,215,0,0.05);
         }
-        .cookie-text a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
-        .cookie-actions {
-            display: flex;
-            align-items: center;
-            gap: .75rem;
-            flex-shrink: 0;
+        .cookie-left { display: flex; align-items: center; gap: 16px; flex: 1; }
+        .cookie-icon { font-size: 28px; flex-shrink: 0; }
+        .cookie-title { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: #ffffff; margin: 0 0 4px 0; }
+        .cookie-desc { font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255,255,255,0.5); margin: 0; line-height: 1.5; }
+        .cookie-link { color: #FFD700; text-decoration: none; }
+        .cookie-link:hover { text-decoration: underline; }
+        .cookie-buttons { display: flex; gap: 10px; flex-shrink: 0; }
+        .cookie-btn-decline {
+          background: transparent; border: 1px solid rgba(255,255,255,0.2);
+          color: rgba(255,255,255,0.6); padding: 10px 20px; border-radius: 8px;
+          font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer;
+          transition: all 0.2s ease;
         }
-        .cookie-accept {
-            background: var(--gold);
-            color: #0a0a0f;
-            border: none;
-            padding: .5rem 1.35rem;
-            border-radius: 5px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: .78rem;
-            font-weight: 700;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: transform .2s, box-shadow .2s;
+        .cookie-btn-decline:hover { border-color: rgba(255,255,255,0.4); color: #ffffff; }
+        .cookie-btn-accept {
+          background: #FFD700; border: none; color: #0a0a0f;
+          padding: 10px 24px; border-radius: 8px;
+          font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700;
+          cursor: pointer; transition: all 0.2s ease;
         }
-        .cookie-accept:hover { transform: translateY(-1px); box-shadow: 0 4px 14px var(--gold-shadow); }
-        .cookie-learn {
-            color: var(--muted);
-            font-size: .8rem;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-            transition: color .2s;
-            white-space: nowrap;
-        }
-        .cookie-learn:hover { color: var(--gold); }
+        .cookie-btn-accept:hover { background: #FFF176; transform: translateY(-1px); }
         @media (max-width: 600px) {
-            #cookie-banner { padding: .85rem 1.4rem; }
-            .cookie-actions { width: 100%; }
+          .cookie-inner { flex-direction: column; align-items: flex-start; }
+          .cookie-buttons { width: 100%; }
+          .cookie-btn-decline, .cookie-btn-accept { flex: 1; text-align: center; }
         }
+
+        /* ── Exit Intent Popup ── */
+        .exit-popup { display: none; position: fixed; inset: 0; z-index: 99995; }
+        .exit-popup.show { display: flex; align-items: center; justify-content: center; }
+        .exit-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
+        .exit-modal {
+          position: relative; background: #16161f;
+          border: 1px solid rgba(255,215,0,0.25); border-radius: 20px;
+          padding: 40px; max-width: 480px; width: 90%; text-align: center;
+          animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        @keyframes popIn {
+          from { opacity: 0; transform: scale(0.8) translateY(20px); }
+          to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .exit-close {
+          position: absolute; top: 16px; right: 16px;
+          background: rgba(255,255,255,0.08); border: none;
+          color: rgba(255,255,255,0.6); width: 32px; height: 32px;
+          border-radius: 50%; cursor: pointer; font-size: 14px;
+          display: flex; align-items: center; justify-content: center;
+          transition: all 0.2s ease;
+        }
+        .exit-close:hover { background: rgba(255,255,255,0.15); color: #ffffff; }
+        .exit-badge {
+          display: inline-block; background: rgba(255,215,0,0.15);
+          border: 1px solid rgba(255,215,0,0.4); color: #FFD700;
+          font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 700;
+          letter-spacing: 3px; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px;
+        }
+        .exit-title {
+          font-family: 'Bebas Neue', sans-serif; font-size: clamp(24px, 4vw, 32px);
+          color: #ffffff; margin: 0 0 12px 0; letter-spacing: 1px; line-height: 1.2;
+        }
+        .exit-subtitle {
+          font-family: 'DM Sans', sans-serif; font-size: 14px;
+          color: rgba(255,255,255,0.55); line-height: 1.6; margin: 0 0 20px 0;
+        }
+        .exit-features { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; text-align: left; }
+        .exit-feature { font-family: 'DM Sans', sans-serif; font-size: 13px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 8px; }
+        .exit-form { display: flex; flex-direction: column; gap: 10px; }
+        .exit-input {
+          background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+          border-radius: 10px; padding: 14px 16px; color: #ffffff;
+          font-family: 'DM Sans', sans-serif; font-size: 14px;
+          width: 100%; box-sizing: border-box; transition: border-color 0.2s ease;
+        }
+        .exit-input:focus { outline: none; border-color: rgba(255,215,0,0.5); }
+        .exit-input::placeholder { color: rgba(255,255,255,0.3); }
+        .exit-submit {
+          background: #FFD700; border: none; border-radius: 10px;
+          padding: 14px 24px; color: #0a0a0f;
+          font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+          cursor: pointer; transition: all 0.2s ease; width: 100%;
+        }
+        .exit-submit:hover { background: #FFF176; transform: translateY(-2px); }
+        .exit-disclaimer { font-family: 'DM Sans', sans-serif; font-size: 11px; color: rgba(255,255,255,0.3); margin: 12px 0 0 0; }
+
+        /* ── FAQ Section ── */
+        .faq-section { padding: 80px 20px; background: #0a0a0f; border-top: 1px solid rgba(255,215,0,0.08); }
+        .faq-container { max-width: 780px; margin: 0 auto; }
+        .faq-header { text-align: center; margin-bottom: 48px; }
+        .faq-label { font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 4px; color: #FFD700; margin: 0 0 12px 0; }
+        .faq-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 6vw, 52px); color: #ffffff; margin: 0 0 12px 0; letter-spacing: 1px; }
+        .faq-subtitle { font-family: 'DM Sans', sans-serif; font-size: 16px; color: rgba(255,255,255,0.5); margin: 0; }
+        .faq-list { display: flex; flex-direction: column; gap: 12px; }
+        .faq-item { background: #16161f; border: 1px solid rgba(255,215,0,0.1); border-radius: 12px; overflow: hidden; transition: border-color 0.3s ease; }
+        .faq-item:hover { border-color: rgba(255,215,0,0.25); }
+        .faq-item.open { border-color: rgba(255,215,0,0.35); }
+        .faq-question {
+          width: 100%; background: none; border: none; padding: 20px 24px;
+          display: flex; align-items: center; justify-content: space-between;
+          gap: 16px; cursor: pointer; text-align: left;
+          font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
+          color: #ffffff; transition: color 0.2s ease;
+        }
+        .faq-question:hover { color: #FFD700; }
+        .faq-item.open .faq-question { color: #FFD700; }
+        .faq-icon { font-size: 22px; color: #FFD700; flex-shrink: 0; transition: transform 0.3s ease; font-weight: 300; }
+        .faq-item.open .faq-icon { transform: rotate(45deg); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+        .faq-item.open .faq-answer { max-height: 400px; }
+        .faq-answer p { font-family: 'DM Sans', sans-serif; font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.7; margin: 0; padding: 0 24px 20px; }
 
         /* ── Three.js particle canvas ─────────────────────────────── */
         #hero-canvas {
@@ -1528,6 +1592,70 @@
             <button id="blog-load-more" class="blog-load-more-btn" style="display:none">Load More Articles →</button>
         </div>
     </div>
+</section>
+
+<!-- ═══════════════════════════════════ FAQ ══════════════════════════════════ -->
+<section id="faq" class="faq-section">
+  <div class="faq-container">
+    <div class="faq-header">
+      <p class="faq-label">GOT QUESTIONS</p>
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <p class="faq-subtitle">Everything you need to know before you decide.</p>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Are these guides really worth it?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Every guide is written from real experience — not theory. The person behind FinanceIntelHub went from $50,000 in debt with zero income to building a sustainable online income from scratch. These are the exact strategies that worked. Not recycled tips from someone who has never been broke. Real strategies from someone who lived it and got out.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>What if I'm completely broke?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>These guides were written specifically for that situation. The Credit Score Fix starts at $7. The Paycheck Trap is $12. These prices exist because we remember what it felt like when something cost more than we had. We did not want price to be the reason someone stays stuck. Every guide also comes with a 7-day money back guarantee — if it does not help you, you pay nothing.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Do you offer refunds?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes — 7-day money back guarantee on every product. No complicated process. Email us at Financeintelhub1@gmail.com with your order number and we will process your refund within 5 to 7 business days. We stand behind everything we publish. If it does not deliver value, you should not pay for it.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Who wrote these guides?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Someone who was exactly where you might be right now. Not a financial advisor. Not an MBA graduate. A person who spent 20 years as a long-haul truck driver, ended up with $50,000 in debt and no income, and had to figure out financial survival from scratch. Every strategy in these guides was tested in real life under real pressure. That is what makes them different from everything else out there.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>What if I get stuck after buying?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Email us at Financeintelhub1@gmail.com with the subject line "Blueprint Call Request." We will personally get on a call with you — no fee, no pitch, no agenda. Just honest help from someone who has been exactly where you are. This offer is genuine. We keep it because we remember what it meant to have someone in your corner when things felt impossible.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════ NEWSLETTER ═══════════════════════════ -->
@@ -2240,15 +2368,6 @@ loadBlogs();
 })();
 </script>
 
-<!-- ── Cookie Consent Banner ──────────────────────────────────── -->
-<div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie consent">
-    <p class="cookie-text">We use cookies and analytics tools to improve your experience and understand our traffic. IP addresses are anonymised. By continuing to use this site you accept our Cookie Policy.</p>
-    <div class="cookie-actions">
-        <button class="cookie-accept" id="cookie-accept">Accept</button>
-        <a href="legal.html" target="_blank" rel="noopener noreferrer" class="cookie-learn">Learn More</a>
-    </div>
-</div>
-
 <script>
 // Update URL hash when nav links clicked
 document.querySelectorAll('a[href^="#"]')
@@ -2258,16 +2377,6 @@ document.querySelectorAll('a[href^="#"]')
     history.pushState(null, null, target);
   });
 });
-// Cookie consent banner
-(function () {
-    if (localStorage.getItem('cookieConsent')) return;
-    const banner = document.getElementById('cookie-banner');
-    requestAnimationFrame(() => requestAnimationFrame(() => banner.classList.add('visible')));
-    document.getElementById('cookie-accept').addEventListener('click', () => {
-        localStorage.setItem('cookieConsent', '1');
-        banner.classList.remove('visible');
-    });
-})();
 </script>
 <script id="mcjs">!function(c,h,i,m,p)
 {m=c.createElement(h),p=c.getElementsByTagName(h)[0],
@@ -2324,5 +2433,101 @@ m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}
       setTimeout(function() { window.location.href = href; }, 300);
     });
     </script>
+<div id="cookie-banner" class="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-left">
+      <div class="cookie-icon">🍪</div>
+      <div class="cookie-text">
+        <p class="cookie-title">We use cookies</p>
+        <p class="cookie-desc">We use cookies to improve your experience and analyze traffic. IP addresses are anonymized. <a href="legal.html" class="cookie-link">Learn more</a></p>
+      </div>
+    </div>
+    <div class="cookie-buttons">
+      <button id="cookie-decline" class="cookie-btn-decline">Decline</button>
+      <button id="cookie-accept" class="cookie-btn-accept">Accept All</button>
+    </div>
+  </div>
+</div>
+<div id="exit-popup" class="exit-popup">
+  <div class="exit-overlay"></div>
+  <div class="exit-modal">
+    <button class="exit-close" id="exit-close">✕</button>
+    <div class="exit-badge">FREE</div>
+    <h2 class="exit-title">Wait — Don't Leave Empty Handed.</h2>
+    <p class="exit-subtitle">Get our weekly finance intel — real strategies from someone who escaped $50K debt from scratch. No fluff. No recycled tips. Just what actually works.</p>
+    <div class="exit-features">
+      <div class="exit-feature">✓ Weekly verified finance news</div>
+      <div class="exit-feature">✓ Real income strategies</div>
+      <div class="exit-feature">✓ Debt payoff tactics that work</div>
+    </div>
+    <form class="exit-form" id="exit-form"
+          action="https://financeintelhub.us21.list-manage.com/subscribe/post"
+          method="POST" target="_blank">
+      <input type="hidden" name="u" value="f35a3efeeae76faf33814e061">
+      <input type="email" name="EMAIL" class="exit-input" placeholder="Enter your email" required>
+      <button type="submit" class="exit-submit">Send Me Free Strategies →</button>
+    </form>
+    <p class="exit-disclaimer">Free. Unsubscribe anytime. No spam ever.</p>
+  </div>
+</div>
+<script>
+(function() {
+  var consent = localStorage.getItem('cookieConsent');
+  if (consent) return;
+  setTimeout(function() {
+    var banner = document.getElementById('cookie-banner');
+    if (banner) banner.classList.add('show');
+  }, 1500);
+  document.getElementById('cookie-accept')?.addEventListener('click', function() {
+    localStorage.setItem('cookieConsent', 'accepted');
+    hideCookieBanner();
+  });
+  document.getElementById('cookie-decline')?.addEventListener('click', function() {
+    localStorage.setItem('cookieConsent', 'declined');
+    hideCookieBanner();
+  });
+  function hideCookieBanner() {
+    var banner = document.getElementById('cookie-banner');
+    if (banner) {
+      banner.style.bottom = '-200px';
+      setTimeout(function() { banner.style.display = 'none'; }, 500);
+    }
+  }
+})();
+</script>
+<script>
+(function() {
+  var shown = sessionStorage.getItem('exitShown');
+  if (shown) return;
+  var triggered = false;
+  document.addEventListener('mouseleave', function(e) {
+    if (triggered) return;
+    if (e.clientY <= 10) {
+      triggered = true;
+      sessionStorage.setItem('exitShown', '1');
+      document.getElementById('exit-popup').classList.add('show');
+    }
+  });
+  function closeExitPopup() {
+    document.getElementById('exit-popup').classList.remove('show');
+  }
+  document.getElementById('exit-close')?.addEventListener('click', closeExitPopup);
+  document.querySelector('.exit-overlay')?.addEventListener('click', closeExitPopup);
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeExitPopup(); });
+  document.getElementById('exit-form')?.addEventListener('submit', function() {
+    setTimeout(closeExitPopup, 500);
+  });
+})();
+</script>
+<script>
+document.querySelectorAll('.faq-question').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var item = this.closest('.faq-item');
+    var isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(el) { el.classList.remove('open'); });
+    if (!isOpen) item.classList.add('open');
+  });
+});
+</script>
 </body>
 </html>
