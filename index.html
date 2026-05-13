@@ -1326,9 +1326,51 @@
             pointer-events: none;
         }
         #hero > *:not(#hero-canvas) { position: relative; z-index: 10; }
+
+        /* ── Loading Screen ── */
+        #loader {
+          position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+          background: #0a0a0f; z-index: 99999;
+          display: flex; align-items: center; justify-content: center;
+          transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #loader.hidden { opacity: 0; visibility: hidden; }
+        #loader-content { text-align: center; }
+        #loader-logo {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(28px, 6vw, 48px);
+          color: #ffffff; letter-spacing: 4px; margin-bottom: 24px;
+          animation: pulse 1.5s ease infinite;
+        }
+        #loader-logo span { color: #FFD700; }
+        #loader-bar {
+          width: 200px; height: 3px; background: rgba(255,215,0,0.2);
+          border-radius: 2px; margin: 0 auto; overflow: hidden;
+        }
+        #loader-fill {
+          height: 100%; width: 0%; background: #FFD700;
+          border-radius: 2px; animation: loadfill 1.2s ease forwards;
+        }
+        @keyframes loadfill { 0% { width: 0%; } 100% { width: 100%; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        /* ── Page Fade-In ── */
+        body { animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
+
+<div id="loader">
+  <div id="loader-content">
+    <div id="loader-logo">FINANCE<span>INTEL</span>HUB</div>
+    <div id="loader-bar">
+      <div id="loader-fill"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════ NAV ═══════════════════════════════════ -->
 <nav id="nav">
@@ -2254,6 +2296,33 @@ m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     })();
+    </script>
+    <script>
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var loader = document.getElementById('loader');
+        if (loader) {
+          loader.classList.add('hidden');
+          setTimeout(function() { loader.style.display = 'none'; }, 500);
+        }
+      }, 1200);
+    });
+    </script>
+    <script>
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a');
+      if (!link) return;
+      var href = link.getAttribute('href');
+      if (!href) return;
+      if (href.startsWith('#') || href.startsWith('http') ||
+          href.startsWith('mailto') || href.startsWith('tel') ||
+          link.target === '_blank') return;
+      e.preventDefault();
+      document.body.style.opacity = '0';
+      document.body.style.transform = 'translateY(-8px)';
+      document.body.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      setTimeout(function() { window.location.href = href; }, 300);
+    });
     </script>
 </body>
 </html>
