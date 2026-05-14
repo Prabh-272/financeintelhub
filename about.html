@@ -537,15 +537,20 @@
         }
         #loader-fill {
           height: 100%; width: 0%; background: #FFD700;
-          border-radius: 2px; animation: loadfill 1.2s ease forwards;
+          border-radius: 2px; animation: loadfill 0.5s ease forwards;
         }
         @keyframes loadfill { 0% { width: 0%; } 100% { width: 100%; } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         /* ── Page Fade-In ── */
-        body { animation: fadeIn 0.4s ease; }
+        body { animation: fadeIn 0.25s ease; }
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to   { opacity: 1; transform: translateY(0); }
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+          * { animation-duration: 0.1s !important; }
+          body { animation: none !important; }
+          #loader-fill { animation-duration: 0.3s !important; }
         }
 
         /* ── Cookie Banner ── */
@@ -591,6 +596,7 @@
     </style>
 </head>
 <body>
+<script>document.body.style.opacity = '1';</script>
 
 <div id="loader">
   <div id="loader-content">
@@ -946,9 +952,20 @@
         var loader = document.getElementById('loader');
         if (loader) {
           loader.classList.add('hidden');
-          setTimeout(function() { loader.style.display = 'none'; }, 500);
+          setTimeout(function() { loader.style.display = 'none'; }, 400);
         }
-      }, 1200);
+      }, 600);
+    });
+    window.addEventListener('pageshow', function(event) {
+      document.body.style.opacity = '1';
+      var loader = document.getElementById('loader');
+      if (loader) {
+        loader.style.display = 'none';
+        loader.classList.add('hidden');
+      }
+    });
+    window.addEventListener('popstate', function() {
+      document.body.style.opacity = '1';
     });
     </script>
     <script>
@@ -961,11 +978,15 @@
           href.startsWith('mailto') || href.startsWith('tel') ||
           link.target === '_blank') return;
       e.preventDefault();
+      document.body.style.transition = 'opacity 0.2s ease';
       document.body.style.opacity = '0';
-      document.body.style.transform = 'translateY(-8px)';
-      document.body.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-      setTimeout(function() { window.location.href = href; }, 300);
+      setTimeout(function() { window.location.href = href; }, 200);
     });
+    window.addEventListener('pageshow', function(e) {
+      document.body.style.opacity = '1';
+      document.body.style.transition = 'opacity 0.2s ease';
+    });
+    document.body.style.opacity = '1';
     </script>
 <div id="cookie-banner" class="cookie-banner">
   <div class="cookie-inner">
@@ -984,27 +1005,53 @@
 </div>
 <script>
 (function() {
-  var consent = localStorage.getItem('cookieConsent');
-  if (consent) return;
-  setTimeout(function() {
-    var banner = document.getElementById('cookie-banner');
-    if (banner) banner.classList.add('show');
-  }, 1500);
-  document.getElementById('cookie-accept')?.addEventListener('click', function() {
-    localStorage.setItem('cookieConsent', 'accepted');
-    hideCookieBanner();
-  });
-  document.getElementById('cookie-decline')?.addEventListener('click', function() {
-    localStorage.setItem('cookieConsent', 'declined');
-    hideCookieBanner();
-  });
-  function hideCookieBanner() {
+  try {
+    var consent = localStorage.getItem('cookieConsent');
+    if (consent) return;
+  } catch(e) {}
+
+  function showCookieBanner() {
     var banner = document.getElementById('cookie-banner');
     if (banner) {
-      banner.style.bottom = '-200px';
-      setTimeout(function() { banner.style.display = 'none'; }, 500);
+      banner.style.display = 'block';
+      setTimeout(function() {
+        banner.classList.add('show');
+      }, 100);
     }
   }
+
+  function hideBanner() {
+    var banner = document.getElementById('cookie-banner');
+    if (banner) {
+      banner.classList.remove('show');
+      setTimeout(function() {
+        banner.style.display = 'none';
+      }, 600);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(showCookieBanner, 1500);
+    });
+  } else {
+    setTimeout(showCookieBanner, 1500);
+  }
+
+  document.addEventListener('click', function(e) {
+    if (e.target.id === 'cookie-accept') {
+      try {
+        localStorage.setItem('cookieConsent', 'accepted');
+      } catch(err) {}
+      hideBanner();
+    }
+    if (e.target.id === 'cookie-decline') {
+      try {
+        localStorage.setItem('cookieConsent', 'declined');
+      } catch(err) {}
+      hideBanner();
+    }
+  });
 })();
 </script>
 </body>
