@@ -68,9 +68,6 @@
 
     <!-- GSAP — defer prevents render-blocking; inline script uses type="module" to run after -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" defer crossorigin="anonymous"></script>
 
     <style>
         /* ── Reset ─────────────────────────────────────────────── */
@@ -1435,16 +1432,7 @@
         .faq-item.open .faq-answer { max-height: 400px; }
         .faq-answer p { font-family: 'DM Sans', sans-serif; font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.7; margin: 0; padding: 0 24px 20px; }
 
-        /* ── Three.js particle canvas ─────────────────────────────── */
-        #hero-canvas {
-            position: absolute; inset: 0; z-index: 0;
-            pointer-events: none;
-            width: 100% !important;
-            max-width: 100vw !important;
-            overflow: hidden !important;
-            left: 0 !important;
-        }
-        #hero > *:not(#hero-canvas) { position: relative; z-index: 10; }
+        #hero > *:not(.particles-container) { position: relative; z-index: 10; }
 
         /* ── Loading Screen ── */
         #loader {
@@ -1479,6 +1467,153 @@
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         /* ── Page Fade-In ── */
         body { opacity: 1; }
+
+        /* ================================
+           INTERSECTION OBSERVER ANIMATIONS
+           ================================ */
+        .reveal {
+          opacity: 0;
+          transform: translateY(32px);
+          transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+                      transform 0.65s cubic-bezier(0.22,1,0.36,1);
+          will-change: transform, opacity;
+        }
+        .reveal.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ================================
+           GOLD SHIMMER HERO TITLE
+           ================================ */
+        .hero-title-shimmer {
+          background: linear-gradient(
+            90deg,
+            #ffffff 0%,
+            #FFD700 20%,
+            #ffffff 40%,
+            #FFD700 60%,
+            #ffffff 80%,
+            #FFD700 100%
+          );
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: shimmer 4s linear infinite;
+        }
+        @keyframes shimmer {
+          0%   { background-position: 200% center; }
+          100% { background-position: -200% center; }
+        }
+
+        /* ================================
+           CSS PARTICLE SYSTEM
+           (replaces Three.js - zero GPU cost)
+           ================================ */
+        .particles-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .particle {
+          position: absolute;
+          width: 3px;
+          height: 3px;
+          background: #FFD700;
+          border-radius: 50%;
+          opacity: 0;
+          animation: floatUp var(--duration, 8s)
+                     var(--delay, 0s)
+                     ease-in infinite;
+        }
+        @keyframes floatUp {
+          0%   { opacity: 0; transform: translateY(100%) scale(0.5); }
+          10%  { opacity: var(--opacity, 0.4); }
+          90%  { opacity: var(--opacity, 0.4); }
+          100% { opacity: 0; transform: translateY(-20px) scale(1); }
+        }
+
+        /* ================================
+           PRODUCT CARD CSS 3D DEPTH
+           ================================ */
+        .product-card,
+        [class*="product-card"],
+        [class*="card"] {
+          transition: transform 0.3s cubic-bezier(0.22,1,0.36,1),
+                      box-shadow 0.3s ease;
+          transform-style: preserve-3d;
+          will-change: transform;
+        }
+        @media (hover: hover) {
+          .product-card:hover,
+          [class*="product-card"]:hover {
+            transform: perspective(800px)
+                       rotateX(-2deg)
+                       rotateY(3deg)
+                       translateY(-4px)
+                       scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4),
+                        0 0 0 1px rgba(255,215,0,0.2);
+          }
+        }
+        @media (hover: none) {
+          .product-card:active,
+          [class*="product-card"]:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+          }
+        }
+
+        /* ================================
+           BUTTON TAP ANIMATION
+           ================================ */
+        button, .btn, a.btn,
+        [class*="btn"],
+        [class*="button"] {
+          transition: transform 0.15s ease,
+                      box-shadow 0.15s ease;
+        }
+        button:active, .btn:active,
+        [class*="btn"]:active {
+          transform: scale(0.97);
+        }
+
+        /* ================================
+           SMOOTH SCROLL
+           ================================ */
+        html {
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* ================================
+           STATS COUNT UP PREP
+           ================================ */
+        .stat-number {
+          transition: all 0.3s ease;
+        }
+
+        /* ================================
+           SECTION SPACING MOBILE
+           ================================ */
+        @media (max-width: 768px) {
+          section {
+            overflow: hidden;
+          }
+          .reveal {
+            transform: translateY(20px);
+          }
+        }
     </style>
 </head>
 <body>
@@ -1513,7 +1648,7 @@
 <main>
 <!-- ═══════════════════════════════════ HERO ══════════════════════════════════ -->
 <section id="hero">
-    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="particles-container" id="particles"></div>
     <p class="hero-eyebrow">Premium Finance Education</p>
     <h1 class="hero-title">Finance<br class="mobile-br"><span class="gold">Intel</span>Hub</h1>
     <p class="hero-tagline">Real strategies. Real results. Financial freedom starts here.</p>
@@ -1853,8 +1988,6 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 /* ── Hero animations ───────────────────────────────────────────── */
-gsap.registerPlugin(ScrollTrigger);
-
 // Set starting positions (CSS already sets opacity:0)
 gsap.set(['.hero-eyebrow','.hero-title','.hero-tagline','.hero-sub','.hero-cta'], { y: 38 });
 
@@ -1866,20 +1999,6 @@ heroTl
     .to('.hero-sub',     { y: 0, opacity: 1, duration: .8  }, '-=.55')
     .to('.hero-cta',     { y: 0, opacity: 1, duration: .7  }, '-=.45')
     .to('#scroll-arrow', { opacity: .65,     duration: .7  }, '-=.2');
-
-/* ── About cards scroll-in ─────────────────────────────────────── */
-if (window.innerWidth > 768) {
-gsap.from('.feature-card', {
-    scrollTrigger: { trigger: '#about', start: 'top 72%' },
-    y: 55, opacity: 0, duration: .75, stagger: .14, ease: 'power2.out'
-});
-
-/* ── Newsletter box scroll-in ──────────────────────────────────── */
-gsap.from('.newsletter-box', {
-    scrollTrigger: { trigger: '#newsletter', start: 'top 80%' },
-    y: 40, opacity: 0, duration: .75, ease: 'power2.out'
-});
-}
 
 /* ── SVG cover generator ───────────────────────────────────────── */
 // Splits a title into 1–3 display lines for the cover art
@@ -2027,21 +2146,6 @@ function renderProducts(products) {
         </div>`;
     }).join('');
 
-    // Hide cards first, then fade up on scroll (desktop only)
-    if (window.innerWidth > 768) {
-    gsap.set('.product-card', { opacity: 0, y: 55 });
-    gsap.to('.product-card', {
-        scrollTrigger: {
-            trigger: '#products',
-            start: 'top 75%',
-        },
-        opacity: 1, y: 0,
-        duration: .75, stagger: .14, ease: 'power2.out'
-    });
-    }
-    // Recalculate positions after dynamic content injected
-    applyTilt('.product-card');
-    if (window.innerWidth > 768) ScrollTrigger.refresh();
 }
 
 async function loadProducts() {
@@ -2165,7 +2269,6 @@ function fillGrid(append) {
             });
         });
         gsap.from(newEls, { opacity: 0, y: 30, duration: .5, stagger: .08, ease: 'power2.out' });
-        applyTiltOnElements(newEls);
     } else {
         grid.innerHTML = sorted.slice(0, visibleCount).map(makeBlogCardHTML).join('');
         attachCardClicks();
@@ -2175,11 +2278,9 @@ function fillGrid(append) {
         } else {
             gsap.from('#blog-grid .blog-card', { opacity: 0, y: 30, duration: .5, stagger: .08, ease: 'power2.out' });
         }
-        applyTilt('#blog-grid .blog-card');
     }
 
     updateLoadMore(sorted.length);
-    ScrollTrigger.refresh();
 }
 
 function switchToCategory(cat) {
@@ -2307,79 +2408,6 @@ async function loadBlogs() {
 
 /* ── Touch detection ─────────────────────────────────────────── */
 function isTouchDevice() { return window.matchMedia('(hover: none)').matches; }
-
-/* ── VanillaTilt helpers ─────────────────────────────────────── */
-function applyTiltOnElements(elements) {
-    if (window.innerWidth <= 768 || isTouchDevice() || typeof VanillaTilt === 'undefined' || !elements.length) return;
-    VanillaTilt.init(elements, { max: 15, speed: 400, glare: true, 'max-glare': 0.3, perspective: 1000 });
-}
-function applyTilt(selector) {
-    applyTiltOnElements([...document.querySelectorAll(selector)]);
-}
-
-/* ── Three.js hero particle background ───────────────────────── */
-if (window.innerWidth > 768) {
-(function initParticles() {
-    const canvas = document.getElementById('hero-canvas');
-    if (!canvas || typeof THREE === 'undefined') return;
-
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const scene  = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.z = 6;
-
-    const count = 200;
-    const pos   = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-        pos[i * 3]     = (Math.random() - 0.5) * 22;
-        pos[i * 3 + 1] = (Math.random() - 0.5) * 16;
-        pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-
-    const mat = new THREE.PointsMaterial({ color: 0xFFD700, size: 0.06, transparent: true, opacity: 0.65, sizeAttenuation: true });
-    const particles = new THREE.Points(geo, mat);
-    scene.add(particles);
-
-    let mx = 0, my = 0;
-    document.addEventListener('mousemove', e => {
-        mx = (e.clientX / window.innerWidth  - 0.5) * 2;
-        my = (e.clientY / window.innerHeight - 0.5) * 2;
-    }, { passive: true });
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    (function animate() {
-        requestAnimationFrame(animate);
-        particles.rotation.y  += 0.0004;
-        particles.rotation.x  += 0.00015;
-        camera.position.x += (mx * 0.6 - camera.position.x) * 0.04;
-        camera.position.y += (-my * 0.4 - camera.position.y) * 0.04;
-        renderer.render(scene, camera);
-    })();
-})();
-}
-
-/* ── 3D scroll-in for each section (desktop only) ───────────── */
-if (window.innerWidth > 768) {
-['#social-proof','#story','#testimonials','#products','#about','#blog','#newsletter'].forEach(sel => {
-    const el = document.querySelector(sel);
-    if (!el) return;
-    gsap.set(el, { transformPerspective: 1000, transformOrigin: 'center top' });
-    gsap.fromTo(el,
-        { opacity: 0, rotateX: 5 },
-        { scrollTrigger: { trigger: el, start: 'top 88%' }, opacity: 1, rotateX: 0, duration: 0.8, ease: 'power2.out' }
-    );
-});
-}
 
 /* ── Magnetic gold CTA buttons ───────────────────────────────── */
 if (!isTouchDevice()) {
@@ -2701,6 +2729,171 @@ document.querySelectorAll('.faq-question').forEach(function(btn) {
     var isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(function(el) { el.classList.remove('open'); });
     if (!isOpen) item.classList.add('open');
+  });
+});
+</script>
+
+<script>
+/* ================================
+   INTERSECTION OBSERVER
+   Fade in sections on scroll
+   ================================ */
+(function() {
+  var selectors = [
+    'section > *',
+    '[class*="product-card"]',
+    '[class*="blog-card"]',
+    '[class*="feature"]',
+    '[class*="stat"]',
+    '.faq-item',
+    'h2', 'h3'
+  ];
+
+  selectors.forEach(function(sel) {
+    try {
+      document.querySelectorAll(sel)
+        .forEach(function(el, i) {
+        el.classList.add('reveal');
+        if (i % 3 === 1)
+          el.classList.add('reveal-delay-1');
+        if (i % 3 === 2)
+          el.classList.add('reveal-delay-2');
+      });
+    } catch(e) {}
+  });
+
+  var observer = new IntersectionObserver(
+    function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    }
+  );
+
+  document.querySelectorAll('.reveal')
+    .forEach(function(el) {
+    observer.observe(el);
+  });
+})();
+
+/* ================================
+   CSS PARTICLE GENERATOR
+   Replaces Three.js entirely
+   Zero GPU cost
+   ================================ */
+(function() {
+  var container = document.getElementById('particles');
+  if (!container) return;
+
+  var count = window.innerWidth > 768 ? 25 : 12;
+
+  for (var i = 0; i < count; i++) {
+    var p = document.createElement('div');
+    p.className = 'particle';
+
+    var left     = Math.random() * 100;
+    var duration = 6 + Math.random() * 8;
+    var delay    = Math.random() * 8;
+    var size     = 1 + Math.random() * 3;
+    var opacity  = 0.2 + Math.random() * 0.5;
+
+    p.style.cssText =
+      'left:' + left + '%;' +
+      'bottom:0;' +
+      'width:' + size + 'px;' +
+      'height:' + size + 'px;' +
+      '--duration:' + duration + 's;' +
+      '--delay:' + delay + 's;' +
+      '--opacity:' + opacity + ';';
+
+    container.appendChild(p);
+  }
+})();
+
+/* ================================
+   STATS COUNT UP ANIMATION
+   ================================ */
+(function() {
+  function countUp(el, target, duration) {
+    var start     = 0;
+    var startTime = null;
+    var isFloat   = target % 1 !== 0;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      var eased    = 1 - Math.pow(1 - progress, 3);
+      var current  = start + (target - start) * eased;
+
+      el.textContent = isFloat
+        ? current.toFixed(1)
+        : Math.floor(current).toLocaleString();
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = isFloat
+          ? target.toFixed(1)
+          : target.toLocaleString();
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  var statObserver = new IntersectionObserver(
+    function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var el  = entry.target;
+        var raw = el.getAttribute('data-count');
+        if (!raw) return;
+        var target = parseFloat(raw);
+        countUp(el, target, 1500);
+        statObserver.unobserve(el);
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  document.querySelectorAll('[data-count]')
+    .forEach(function(el) {
+    statObserver.observe(el);
+  });
+})();
+
+/* ================================
+   HERO SHIMMER TITLE
+   ================================ */
+(function() {
+  var heroTitle = document.querySelector(
+    'h1, .hero-title, [class*="hero"] h2');
+  if (heroTitle) {
+    heroTitle.classList.add('hero-title-shimmer');
+  }
+})();
+
+/* ================================
+   SMOOTH SCROLL FOR ANCHOR LINKS
+   ================================ */
+document.querySelectorAll('a[href^="#"]')
+  .forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    var target = document.querySelector(
+      this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
   });
 });
 </script>
